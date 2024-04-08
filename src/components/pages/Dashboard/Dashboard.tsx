@@ -41,13 +41,36 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                     )}
                 </div>
 
-                <div className="line1">
+
                     <img className="line" src={require("../../image/Rectangle 32.svg").default} alt="선 "/>
-                </div>
+
             </div>
             <div>
-                <button onClick={handleOpenDebateRecord}>토론 기록</button>
-                <button onClick={handleLogout}>Logout</button>
+                <div className="page">
+                    <div className="buttonList">
+                        <button className="dashboardButton" onClick={handleLogout}>
+                            <text className="Button_text">대시 보드</text>
+                        </button>
+                        <button className="userButton" onClick={handleLogout}>
+                            <text className="Button_text">사용자 설정</text>
+                        </button>
+                        <button className="ruleButton" onClick={handleLogout}>
+                            <text className="Button_text">토론 규칙</text>
+                        </button>
+                        <button className="paymentButton" onClick={handleLogout}>
+                            <text className="Button_text">결제 정보</text>
+                        </button>
+                        <button className="VolumeButton" onClick={handleLogout}>
+                            <text className="Button_text">용량 정보</text>
+                        </button>
+                        <button className="logout" onClick={handleLogout}>
+                            <text className="Button_text">로그아웃</text>
+                        </button>
+                    </div>
+                    <div className="pagebutton">
+                        <button className="debateRecord" onClick={handleOpenDebateRecord}>토론 기록</button>
+                    </div>
+                </div>
 
             </div>
         </>
