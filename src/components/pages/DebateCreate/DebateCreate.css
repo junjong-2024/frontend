@@ -1,0 +1,71 @@
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 800;
+    src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'), url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');
+}
+
+
+.PopupLogo1 {
+    text-align: center;
+    font-family: "Noto Sans KR", sans-serif;
+    font-style: normal;
+    color: #2196F3;
+}
+
+.logoImg {
+    margin: auto;
+    padding-top: 50px;
+    width: 226px;
+    height: 209px;
+}
+
+.Name {
+    font-size: 20px;
+    display: block;
+}
+
+.nameInput {
+    margin-top: 10px;
+    display: block;
+    width: 531px;
+    height: 85px;
+    font-size: 25px;
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+}
+
+.ruleSelect {
+    display: block;
+}
+
+.debateRule {
+    margin-top: 20px;
+    font-size: 20px;
+    display: block;
+}
+
+.debateRuleBox {
+    margin-top: 10px;
+    display: block;
+    width: 537px;
+    height: 85px;
+    font-size: 25px;
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+}
+
+.create {
+    text-align: center;
+}
+
+.createButton {
+    margin-top: 190px;
+    width: 264px;
+    height: 79px;
+    font-size: 30px;
+    background-color: #0064BA;
+    border: 1px solid #0064BA;
+    border-radius: 10px;
+    color: white;
+}
