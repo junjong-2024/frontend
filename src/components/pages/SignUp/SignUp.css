@@ -1,0 +1,122 @@
+.signUpText{
+    margin-top: 20px;
+    text-align: center;
+
+}
+.Text{
+    font-size: 40px;
+}
+
+.signUpList{
+    text-align: center;
+}
+
+.signUpUsername{
+    margin-top: 50px;
+    background-image: url("../../image/Rectangle 37.svg");
+    background-repeat: no-repeat;
+    background-color: #D9D9D9;
+    padding-left: 80px;
+    width: 1400px;
+    height: 70px;
+    font-size: 23px;
+    border: 3px solid #D9D9D9;
+    border-radius: 10px;
+}
+.signUpUsername::placeholder{
+    color: black;
+}
+
+.signUpPwd{
+    margin-top: 40px;
+    background-image: url("../../image/image 1.svg");
+    background-repeat: no-repeat;
+    background-color: white;
+    padding-left: 80px;
+    width: 1400px;
+    height: 70px;
+    font-size: 23px;
+    border: 3px solid #D9D9D9;
+    border-radius: 10px;
+}
+.signUpPwd::placeholder{
+    color: black;
+}
+/*
+.signUpPwdConfirm{
+    margin-top: 40px;
+    background-image: url("../../image/image 1.svg");
+    background-repeat: no-repeat;
+    background-color: #D9D9D9;
+    padding-left: 80px;
+    width: 1400px;
+    height: 70px;
+    font-size: 23px;
+    border: 3px solid #D9D9D9;
+    border-radius: 10px;
+}
+.signUpPwdConfirm::placeholder{
+    color: black;
+}
+*/
+.signUpEmail{
+    margin-top: 40px;
+    background-image: url("../../image/email.svg");
+    background-repeat: no-repeat;
+    background-color: #D9D9D9;
+    padding-left: 80px;
+    width: 1400px;
+    height: 70px;
+    font-size: 23px;
+    border: 3px solid #D9D9D9;
+    border-radius: 10px;
+}
+.signUpEmail::placeholder{
+    color: black;
+}
+
+.signUpName{
+    margin-top: 40px;
+    background-image: url("../../image/Rectangle 37.svg");
+    background-repeat: no-repeat;
+    background-color: white;
+    padding-left: 80px;
+    width: 1400px;
+    height: 70px;
+    font-size: 23px;
+    border: 3px solid #D9D9D9;
+    border-radius: 10px;
+}
+.signUpName::placeholder{
+    color: black;
+}
+.PhoneNumber{
+    margin-top: 40px;
+    background-image: url("../../image/image 2.svg");
+    background-repeat: no-repeat;
+    background-color: #D9D9D9;
+    padding-left: 80px;
+    width: 1400px;
+    height: 70px;
+    font-size: 23px;
+    border: 3px solid #D9D9D9;
+    border-radius: 10px;
+}
+.PhoneNumber::placeholder{
+    color: black;
+}
+
+.SignUp{
+    margin-top: 70px;
+    width: 413px;
+    height: 62px;
+    background-color: #2196F3;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    border: 3px solid #2196F3;
+    border-radius: 10px;
+}
+.footer{
+    height: 60px;
+}

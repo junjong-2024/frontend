@@ -42,7 +42,7 @@
     height: 3px;
 }
 .page{
-    display: inline-block;
+    display:  flex;
     height: 100vh;
     width: max-content;
 }
@@ -137,35 +137,75 @@
     background-color: #0064BA;
     color: white;
 }
-.pagebutton{
+.recordPage{
     display: inline-block;
-    float: right;
-    font-weight: bold;
-    width: 100vh;
+    width: 70%;
 }
-.debateRecord{
-    margin-top: 40px;
-    margin-right: 1050px;
-    width: 526px;
-    height: 342px;
-    background-color: white;
-    border: none;
-}
-.debateImg{
-    margin-left: 110px;
-    width: 516px;
-    height: 322px;
-    border-radius: 10px;
-}
-.debateTitle{
-    margin-left: 230px;
-    font-size: 25px;
-}
-.dash{
+.debateCheck{
 
     display: inline-block;
     margin-top: 60px;
     margin-left: 120px;
     font-size: 40px;
     font-weight: bold;
+}
+.debateName{
+
+    margin-left: 40px;
+    font-size: 27px;
+}
+.debateDate{
+
+    margin-left: 20px;
+    font-size: 27px;
+}
+.debateCheckImg{
+    display: inline;
+    float: left;
+    margin-top: 30px;
+    margin-left: 120px;
+    width: 673px;
+    height: 428px;
+    border-radius: 10px;
+}
+.recordButton{
+    margin-top: 160px;
+    display: block;
+    margin-left: 900px;
+}
+.videoDownload{
+    display: block;
+    background-color: #0064BA;
+    color: white;
+    width: 400px;
+    height: 79px;
+    font-size: 26px;
+    border: 1px solid #0064BA;
+    border-radius: 10px;
+}
+.scriptDownload{
+    margin-top: 20px;
+    display: block;
+    background-color: #0064BA;
+    color: white;
+    width: 400px;
+    height: 79px;
+    font-size: 26px;
+    border: 1px solid #0064BA;
+    border-radius: 10px;
+}
+.script{
+    margin-top: 170px;
+    display: block;
+    margin-left: 120px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.scriptContent{
+    margin-top: 40px;
+    display: inline-block;
+    border: 1px solid black;
+    margin-left: 120px;
+    width: 61vw;
+    height: 200px;
 }

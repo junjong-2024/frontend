@@ -6,6 +6,12 @@ import SignUpForm from "./components/pages/SignUp/SignUp";
 import DebateRecord from "./components/pages/DebateRecord/DebateRecords";
 import DebateRoom from "./components/pages/DebateRoom/DebateRoom";
 import Modal from "./components/pages/DebateCreate/DebateCreate";
+import UserSetting from "./components/pages/Dashboard/UserSetting";
+import DebateRule from "./components/pages/Dashboard/DebateRule";
+import Payment from "./components/pages/Dashboard/Payment";
+import Volume from "./components/pages/Dashboard/Volume";
+import SettingCreater from "./components/pages/Setting/SettingCreater";
+import SettingMember from "./components/pages/Setting/SettingMember";
 
 const App: React.FC = () => {
     const handleLogin = (username: string, password: string) => {
@@ -49,10 +55,20 @@ const App: React.FC = () => {
 
                 <Route path="/dashboard" element={<Dashboard onDebateCreate={debateCreate} onLogout={logout}
                                                              onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
-                <Route path="/debateRecord" element={<DebateRecord onBack={back}/>}/>
+                <Route path="/debateRecord" element={<DebateRecord onBack={back} onDebateCreate={debateCreate} onDebateName={join}/>}/>
+                <Route path="/usersetting" element={<UserSetting onDebateCreate={debateCreate} onLogout={logout}
+                                                                 onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                <Route path="/DebateRule" element={<DebateRule onDebateCreate={debateCreate} onLogout={logout}
+                                                                 onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                <Route path="/Payment" element={<Payment onDebateCreate={debateCreate} onLogout={logout}
+                                                               onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                <Route path="/Volume" element={<Volume onDebateCreate={debateCreate} onLogout={logout}
+                                                         onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
                 <Route path="/debateRoom" element={<DebateRoom onLeave={back}/>}/>
                 <Route path="/debateCreate"
                        element={<Modal onButtonClick={debateCreate} onClose={back} onDebateName={join}/>}/>
+                <Route path="/SettingCreater" element={<SettingCreater onSubmit={signup}/>}/>
+                <Route path="/SettingMember" element={<SettingMember onSubmit={join}/>}/>
 
 
             </Routes>

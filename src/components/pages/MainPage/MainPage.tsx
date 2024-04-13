@@ -22,7 +22,7 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, onJoin, onRegister}) => {
 
     const handleJoin = () => {
         onJoin(joinCode);
-        navigate('/userSetting');
+        navigate('/SettingMember');
     };
 
     const handleRegister = () => {
@@ -71,7 +71,9 @@ const LoginForm: React.FC<LoginFormProps> = ({onLogin, onJoin, onRegister}) => {
                     </div>
                 </div>
                 <div className="join">
-                    <img className="logoImg" src={require("../../image/logo.svg").default} alt="로고"/>
+                    <div className="img">
+                    <img className="mainlogoImg" src={require("../../image/logo.svg").default} alt="로고"/>
+                    </div>
                     <text className="joinText">토론방 참여코드 입력</text>
                     <div>
                         <input

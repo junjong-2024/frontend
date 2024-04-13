@@ -18,13 +18,13 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName}) => 
         onDebateName(debateName);
     }
     const create = () => {
-        navigate('/userSetting');
+        navigate('/SettingCreater');
     };
 
     return (
         <Dialog className="popup" open={true} onClose={onClose}>
-            <img className="logoImg" src={require("../../image/logo.svg").default} alt="로고"/>
-            <DialogTitle className="PopupLogo1" fontSize="60px" fontWeight="bold">Deba;it</DialogTitle>
+            <img className="logoImg" width="206px" height="189px" src={require("../../image/logo.svg").default} alt="로고"/>
+            <DialogTitle className="PopupLogo1" fontSize="50px" fontWeight="bold">Deba;it</DialogTitle>
             <DialogContent>
                 <form className="debateNameSet" onSubmit={NameSet}>
                     <div>

@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import Modal from "../DebateCreate/DebateCreate";
-import "./DebateRecord.css"
+import Modal from '../DebateCreate/DebateCreate';
+import "./Payment.css";
 
-interface DebateRecordProps {
-    onBack: () => void;
+interface PaymentProps {
+    onLogout: () => void;
     onDebateCreate: () => void;
+    onOpenDebateRecord: () => void;
     onDebateName: () => void;
 }
 
-const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDebateName}) => {
+const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -83,18 +84,7 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
                             <text className="Button_text">로그아웃</text>
                         </button>
                     </div>
-                    <div className="recordPage">
-                    <text className="debateCheck">토론 조회</text>
-                    <text className="debateName">토론방 이름</text>
-                    <text className="debateDate">토론 날짜</text>
-                    <img className="debateCheckImg" src={"https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"}></img>
-                    <div className="recordButton">
-                        <button className="videoDownload">영상 다운로드</button>
-                        <button className="scriptDownload">스크립트 다운로드</button>
-                    </div>
-                    <text className="script">스크립트 미리보기</text>
-                    <text className="scriptContent">내용</text>
-                    </div>
+                    <text className="dash">결제 정보</text>
                 </div>
 
             </div>
@@ -102,4 +92,4 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
     );
 };
 
-export default DebateRecord;
+export default Payment;

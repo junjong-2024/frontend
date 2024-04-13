@@ -14,18 +14,18 @@
 }
 
 .line {
-    width: 100%;
+    width: 100vh;
     height: 3px;
 }
 
 .item {
-    margin: 0 auto;
+
     display: flex;
 }
 
 .LoginAndSignup {
     width: 700px;
-    margin-left: 250px;
+    margin-left: 150px;
     text-align: center;
 }
 
@@ -38,12 +38,12 @@
 .login {
     display: inline-block;
     text-align: center;
-    font-size: 48px;
+    font-size: 38px;
     width: 659px;
 }
 
 .idtext {
-    margin-top: 50px;
+    margin-top: 30px;
     display: inline-block;
     text-align-last: left;
     font-size: 18px;
@@ -88,7 +88,7 @@
     height: 85px;
     border: 1px solid #2196F3;
     border-radius: 10px;
-    font-size: 40px;
+    font-size: 30px;
     color: white;
     background-color: #2196F3;
     font-weight: bold;
@@ -100,7 +100,7 @@
     height: 85px;
     border: 1px solid #A2ACBD;
     border-radius: 10px;
-    font-size: 40px;
+    font-size: 30px;
     color: white;
     background-color: #A2ACBD;
     font-weight: bold;
@@ -108,16 +108,16 @@
 }
 
 .join {
-    margin-left: 400px;
+    margin-left: 300px;
     width: 610px;
-    margin-top: 170px;
+    margin-top: 130px;
     text-align: center;
 }
 
 .joinText {
     display: inline-block;
-    margin-top: 10px;
-    font-size: 48px;
+    margin-top: 20px;
+    font-size: 38px;
 }
 
 .joinInput {
@@ -135,9 +135,18 @@
     height: 85px;
     border: 1px solid #0064BA;
     border-radius: 10px;
-    font-size: 40px;
+    font-size: 30px;
     color: white;
     background-color: #0064BA;
     font-weight: bold;
     margin-top: 55px;
+}
+.img{
+    display: flex;
+    justify-content: center;
+}
+.mainlogoImg{
+
+    display: block;
+    padding-top: 20px;
 }

@@ -16,8 +16,7 @@
 .logoImg {
     margin: auto;
     padding-top: 50px;
-    width: 226px;
-    height: 209px;
+
 }
 
 .Name {
@@ -29,8 +28,8 @@
     margin-top: 10px;
     display: block;
     width: 531px;
-    height: 85px;
-    font-size: 25px;
+    height: 75px;
+    font-size: 20px;
     border: 1px solid #A2ACBD;
     border-radius: 10px;
 }
@@ -49,8 +48,8 @@
     margin-top: 10px;
     display: block;
     width: 537px;
-    height: 85px;
-    font-size: 25px;
+    height: 75px;
+    font-size: 20px;
     border: 1px solid #A2ACBD;
     border-radius: 10px;
 }
@@ -60,10 +59,10 @@
 }
 
 .createButton {
-    margin-top: 190px;
-    width: 264px;
-    height: 79px;
-    font-size: 30px;
+    margin-top: 153px;
+    width: 260px;
+    height: 75px;
+    font-size: 25px;
     background-color: #0064BA;
     border: 1px solid #0064BA;
     border-radius: 10px;

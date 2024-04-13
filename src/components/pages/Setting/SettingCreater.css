@@ -1,0 +1,177 @@
+.top{
+    display: flex;
+
+}
+.privateCam{
+    display: inline-block;
+    width: 764px;
+    height: 380px;
+    margin-top: 30px;
+    margin-left: 130px;
+}
+.otherButton{
+    margin-left: 170px;
+    margin-top: 90px;
+    display: block;
+}
+.SoundSet{
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+}
+.soundClick{
+    border: #F85E54;
+    background-color: #F85E54;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.soundIcon{
+    width: 40px;
+    height: 40px;
+}
+.videoSet{
+    margin-top: 40px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+}
+.videoClick{
+    border: #F85E54;
+    background-color: #F85E54;
+    margin-top: 40px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.videoIcon{
+    width: 40px;
+    height: 40px;
+}
+
+.micSet{
+    margin-top: 40px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+}
+.micClick{
+    border: #F85E54;
+    background-color: #F85E54;
+    margin-top: 40px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.micIcon{
+    width: 40px;
+    height: 40px;
+}
+.setSelect{
+    margin-top: 90px;
+    margin-left: 80px;
+    display: block;
+}
+.soundChoice{
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+    display: block;
+    width: 480px;
+    height: 60px;
+    font-size: 15px;
+}
+.soundChoice:focus{
+    font-size: 15px;
+    border-radius: 10px;
+}
+.videoChoice{
+    font-size: 15px;
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+    margin-top: 40px;
+    display: block;
+    width: 480px;
+    height: 60px;
+}
+.videoChoice:focus{
+    font-size: 15px;
+    border-radius: 10px;
+}
+.micChoice{
+    font-size: 15px;
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+    margin-top: 40px;
+    display: block;
+    width: 480px;
+    height: 60px;
+}
+.micChoice:focus{
+    font-size: 15px;
+    border-radius: 10px;
+}
+.bottom{
+    display: flex;
+}
+.nicknameSet{
+    display: block;
+    margin-top: 50px;
+    margin-left: 80px;
+    font-size: 25px;
+}
+.nicknameInput{
+
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 80px;
+    width: 474px;
+    height: 70px;
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+}
+
+.nicknameButton{
+    height: 70px;
+    font-size: 30px;
+    padding-bottom: 10px;
+    margin-left: 30px;
+    width: 190px;
+    background-color: #0064BA;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid #0064BA;
+}
+.createText{
+    font-size: 35px;
+    font-weight: bold;
+    margin-top: 100px;
+    margin-left: 270px;
+    display: block;
+}
+.debateCreateBtn{
+    height: 75px;
+    width: 357px;
+    margin-top: 40px;
+    margin-left: 360px;
+    background-color: #A2ACBD;
+    color: white;
+    border-radius: 47px;
+    border: 1px solid #A2ACBD;
+    font-size: 30px;
+    font-weight: bold;
+}
+.debateCreateBtn:active{
+    background-color: #2196F3;
+    border-radius: 47px;
+    border: 1px solid #2196F3;
+}
