@@ -1,0 +1,47 @@
+.lineTop{
+    text-align: center;
+}
+.logo{
+    margin-left: 40px;
+    margin-top: 15px;
+    width: 93px;
+    height: 80px;
+    float: left;
+}
+.Title{
+    margin-top: 25px;
+    font-size: 40px;
+    font-weight: bold;
+    display: inline-block;
+}
+.memberCount{
+    margin-right: 50px;
+    margin-top: 35px;
+    font-size: 25px;
+    display: inline-block;
+    float: right;
+}
+.timer{
+    display: flex;
+}
+.timerBar{
+    width: 800px;
+}
+.bar{
+    width: 800px;
+    height: 30px;
+}
+.order{
+    background-color: #0064BA;
+    color: white;
+    border-radius: 10px;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+
+}
