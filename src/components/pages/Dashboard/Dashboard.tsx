@@ -8,9 +8,10 @@ interface DashboardProps {
     onDebateCreate: () => void;
     onOpenDebateRecord: () => void;
     onDebateName: () => void;
+    onDebateContent: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDebateRecord, onDebateName}) => {
+const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDebateRecord, onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                     <text className="dashboardLogo">Deba;it</text>
                     <button className="debateCreate" onClick={handleDebateCreate}>토론 생성</button>
                     {showModal && (
-                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName}/>
+                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName} onDebateContent={onDebateContent}/>
                     )}
                 </div>
 

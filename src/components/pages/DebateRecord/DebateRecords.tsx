@@ -7,9 +7,10 @@ interface DebateRecordProps {
     onBack: () => void;
     onDebateCreate: () => void;
     onDebateName: () => void;
+    onDebateContent: () => void;
 }
 
-const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDebateName}) => {
+const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -53,7 +54,7 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
                     <text className="dashboardLogo">Deba;it</text>
                     <button className="debateCreate" onClick={handleDebateCreate}>토론 생성</button>
                     {showModal && (
-                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName}/>
+                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName} onDebateContent={onDebateContent}/>
                     )}
                 </div>
 

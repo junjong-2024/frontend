@@ -8,9 +8,10 @@ interface DebateRuleProps {
     onDebateCreate: () => void;
     onOpenDebateRecord: () => void;
     onDebateName: () => void;
+    onDebateContent: () => void;
 }
 
-const DebateRule: React.FC<DebateRuleProps> = ({ onDebateCreate, onDebateName}) => {
+const DebateRule: React.FC<DebateRuleProps> = ({ onDebateCreate, onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const DebateRule: React.FC<DebateRuleProps> = ({ onDebateCreate, onDebateName}) 
                     <text className="dashboardLogo">Deba;it</text>
                     <button className="debateCreate" onClick={handleDebateCreate}>토론 생성</button>
                     {showModal && (
-                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName}/>
+                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName} onDebateContent={onDebateContent}/>
                     )}
                 </div>
 

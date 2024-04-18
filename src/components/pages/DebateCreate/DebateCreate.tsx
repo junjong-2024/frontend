@@ -7,15 +7,20 @@ interface ModalProps {
     onClose: () => void;
     onDebateName: (debateName: string) => void;
     onButtonClick: () => void;
+    onDebateContent: (debateContent: string) => void;
 }
 
 
-const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName}) => {
+const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDebateContent}) => {
     const [debateName, setDebateName] = useState('');
+    const [debateContent, setDebateContent] = useState('');
     const navigate = useNavigate();
 
     const NameSet = () => {
         onDebateName(debateName);
+    }
+    const ContentSet = () => {
+        onDebateContent(debateName);
     }
     const create = () => {
         navigate('/SettingCreater');
@@ -23,8 +28,8 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName}) => 
 
     return (
         <Dialog className="popup" open={true} onClose={onClose}>
-            <img className="logoImg" width="206px" height="189px" src={require("../../image/logo.svg").default} alt="로고"/>
-            <DialogTitle className="PopupLogo1" fontSize="50px" fontWeight="bold">Deba;it</DialogTitle>
+            <img className="logoImg" width="186px" height="169px" src={require("../../image/logo.svg").default} alt="로고"/>
+            <DialogTitle className="PopupLogo1" fontSize="40px" fontWeight="bold">Deba;it</DialogTitle>
             <DialogContent>
                 <form className="debateNameSet" onSubmit={NameSet}>
                     <div>
@@ -35,6 +40,18 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName}) => 
                             id="debateName"
                             value={debateName}
                             onChange={(e) => setDebateName(e.target.value)}
+                            required
+                        />
+                    </div>
+                </form>
+                <form className="debateContent" onSubmit={ContentSet}>
+                    <div>
+                        <label className="Content" htmlFor="debateContent">토론방 설명</label>
+                        <textarea
+                            className="ContentInput"
+                            id="debateContent"
+                            value={debateContent}
+                            onChange={(e) => setDebateContent(e.target.value)}
                             required
                         />
                     </div>

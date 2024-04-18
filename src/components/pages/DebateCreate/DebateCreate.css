@@ -20,7 +20,7 @@
 }
 
 .Name {
-    font-size: 20px;
+    font-size: 18px;
     display: block;
 }
 
@@ -28,7 +28,21 @@
     margin-top: 10px;
     display: block;
     width: 531px;
-    height: 75px;
+    height: 65px;
+    font-size: 20px;
+    border: 1px solid #A2ACBD;
+    border-radius: 10px;
+}
+.Content {
+    font-size: 18px;
+    display: block;
+}
+
+.ContentInput {
+    margin-top: 10px;
+    display: block;
+    width: 531px;
+    height: 65px;
     font-size: 20px;
     border: 1px solid #A2ACBD;
     border-radius: 10px;
@@ -40,7 +54,7 @@
 
 .debateRule {
     margin-top: 20px;
-    font-size: 20px;
+    font-size: 18px;
     display: block;
 }
 
@@ -48,7 +62,7 @@
     margin-top: 10px;
     display: block;
     width: 537px;
-    height: 75px;
+    height: 65px;
     font-size: 20px;
     border: 1px solid #A2ACBD;
     border-radius: 10px;
@@ -59,10 +73,10 @@
 }
 
 .createButton {
-    margin-top: 153px;
-    width: 260px;
-    height: 75px;
-    font-size: 25px;
+    margin-top: 115px;
+    width: 240px;
+    height: 65px;
+    font-size: 23px;
     background-color: #0064BA;
     border: 1px solid #0064BA;
     border-radius: 10px;

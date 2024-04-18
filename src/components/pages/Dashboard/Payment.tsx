@@ -8,9 +8,10 @@ interface PaymentProps {
     onDebateCreate: () => void;
     onOpenDebateRecord: () => void;
     onDebateName: () => void;
+    onDebateContent: () => void;
 }
 
-const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName}) => {
+const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName
                     <text className="dashboardLogo">Deba;it</text>
                     <button className="debateCreate" onClick={handleDebateCreate}>토론 생성</button>
                     {showModal && (
-                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName}/>
+                        <Modal onClose={handleCloseModal} onButtonClick={onDebateCreate} onDebateName={onDebateName} onDebateContent={onDebateContent}/>
                     )}
                 </div>
 

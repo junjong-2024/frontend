@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import "./DebateRoom.css"
-import {Box, LinearProgress, linearProgressClasses, styled, Typography} from "@mui/material";
+import {Box, LinearProgress, linearProgressClasses, styled, Typography,IconButton,Menu} from "@mui/material";
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import speaker from "../../image/speaker.svg"
+import speakerMute from "../../image/speakermute.svg"
+import video from "../../image/video.svg"
+import videMute from "../../image/videomute.svg"
+import mic from "../../image/mic.svg"
+import micMute from "../../image/micmute.svg"
 
 interface DebateRoomProps {
     onLeave: () => void;
@@ -15,10 +23,74 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const leave = () => {
         navigate('/dashboard');
     };
+    const [soundClicked, setSoundClicked] = useState(false);
+    const [videoClicked, setVideoClicked] = useState(false);
+    const [micClicked, setMicClicked] = useState(false);
+    const [DebateClicked, setDebateClicked] = useState(false);
+    const [DebateText, setDebateText] = useState("토론시작");
+    const [soundImg, setSoundImg] = useState(speaker);
+    const [videoImg, setVideoImg] = useState(video);
+    const [micImg, setMicImg] = useState(mic);
+
+    const SoundClick = () => {
+        if (soundClicked) {
+            setSoundImg(speaker);
+            setSoundClicked(false); // 초기 상태 false 일 땐 초기 상태 이미지 src
+        } else {
+            setSoundImg(speakerMute);
+            setSoundClicked(true); // true일 땐 변경될 이미지 src
+        }
+    };
+    const videoClick = () => {
+        if (videoClicked) {
+            setVideoImg(video);
+            setVideoClicked(false); // 초기 상태 false 일 땐 초기 상태 이미지 src
+        } else {
+            setVideoImg(videMute);
+            setVideoClicked(true); // true일 땐 변경될 이미지 src
+        }
+    };
+    const micClick = () => {
+        if (micClicked) {
+            setMicImg(mic);
+            setMicClicked(false); // 초기 상태 false 일 땐 초기 상태 이미지 src
+        } else {
+            setMicImg(micMute);
+            setMicClicked(true); // true일 땐 변경될 이미지 src
+        }
+    };
+    const DebateClick = () => {
+        if (DebateClicked) {
+            setDebateText("토론시작");
+            setDebateClicked(false); // 초기 상태 false 일 땐 초기 상태 이미지 src
+        } else {
+            setDebateText("토론종료");
+            setDebateClicked(true); // true일 땐 변경될 이미지 src
+        }
+    };
+
+    const options = [
+        'A1',
+        'A2',
+        'A3',
+        'B1',
+        'B2',
+        'B3'
+    ];
+    const ITEM_HEIGHT = 68;
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
         height: 30,
-
+        width: 1500,
         [`&.${linearProgressClasses.colorPrimary}`]: {
             backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 300 : 800],
         },
@@ -80,11 +152,215 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 <Box  className="timerBar" sx={{ width: '100%' }}>
                     <BorderLinearProgress variant="determinate" value={progress}></BorderLinearProgress>
                 </Box>
+                <div className="timerText" >
                 <Typography variant="h5" gutterBottom>
                     {timeLeft}
                 </Typography>
+                </div>
             </div>
-            <button onClick={leave}>Leave</button>
+            <div className="AteamArea">
+                <div className="A1">
+                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default}/>
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                </div>
+                <div className="A2">
+                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                </div>
+                <div className="A3">
+                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                </div>
+            </div>
+            <div className="BteamArea">
+                <div className="B1">
+                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default}/>
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                </div>
+                <div className="B2">
+                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                </div>
+                <div className="B3">
+                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? 'long-menu' : undefined}
+                        aria-expanded={open ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Menu>
+                </div>
+            </div>
+            <div className="btnAndCode">
+                <div className="InviteCode">
+                    <text className="invite">토론방 참여 코드</text>
+                    <text className="code">abc-def-ghi</text>
+                </div>
+                <div className="btnList">
+                    <button className={soundClicked ?"RoomSoundClick" : "RoomSoundSet"} onClick={SoundClick}>
+                        <img className="sound" src={soundImg} />
+                    </button>
+                    <button className={videoClicked ? "RoomVideoClick" : "RoomVideoSet"} onClick={videoClick}>
+                        <img className="video" src={videoImg} />
+                    </button>
+                    <button className={micClicked ? "RoomMicClick" : "RoomMicSet"} onClick={micClick}>
+                        <img className="mic" src={micImg} />
+                    </button>
+                    <button className="leaveBtn" onClick={leave}>
+                        <img className="leave" src={require("../../image/logout 2.svg").default}/>
+                    </button>
+                </div>
+                <div className="debateBtn">
+                <button className={DebateClicked ? "RoomDebateClick":"RoomDebateSet"} onClick={DebateClick}>
+                    <text className="debateText" >{DebateText}</text>
+                </button>
+                </div>
+            </div>
         </div>
     );
 };

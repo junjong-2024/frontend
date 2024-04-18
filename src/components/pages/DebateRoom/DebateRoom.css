@@ -23,14 +23,13 @@
 }
 .timer{
     display: flex;
+    margin-top: 20px;
 }
 .timerBar{
-    width: 800px;
+    margin-top: 10px;
+    margin-left: 60px;
 }
-.bar{
-    width: 800px;
-    height: 30px;
-}
+
 .order{
     background-color: #0064BA;
     color: white;
@@ -43,5 +42,151 @@
     align-items: center;
     font-size: 24px;
     font-weight: bold;
-
+    margin-left: 40px;
+}
+.timerText{
+    margin-right: 70px;
+    margin-top: 10px;
+}
+.AteamArea{
+    display: flex;
+    margin-top: 30px;
+    margin-left: 40px;
+}
+.A2{
+   margin-left: 80px;
+}
+.A3{
+    margin-left: 80px;
+}
+.BteamArea{
+    display: flex;
+    margin-top: 30px;
+    margin-left: 40px;
+}
+.B2{
+    margin-left: 80px;
+}
+.B3{
+    margin-left: 80px;
+}
+.btnAndCode{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+.InviteCode{
+    margin-right: auto;
+    margin-left: 40px;
+}
+.invite{
+    font-size: 25px;
+    font-weight: bold;
+}
+.code{
+    margin-left: 10px;
+    font-size: 20px;
+}
+.btnList{
+    display: flex;
+}
+.RoomSoundSet{
+    margin-right: 30px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+}
+.RoomSoundClick{
+    margin-right: 30px;
+    border: #F85E54;
+    background-color: #F85E54;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.sound{
+    width: 40px;
+    height: 40px;
+}
+.RoomVideoSet{
+    margin-right: 30px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+}
+.RoomVideoClick{
+    margin-right: 30px;
+    border: #F85E54;
+    background-color: #F85E54;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.video{
+    width: 40px;
+    height: 40px;
+}
+.RoomMicSet{
+    margin-right: 30px;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+}
+.RoomMicClick{
+    margin-right: 30px;
+    border: #F85E54;
+    background-color: #F85E54;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.mic{
+    width: 40px;
+    height: 40px;
+}
+.leaveBtn{
+    border: #F85E54;
+    background-color: #F85E54;
+    display: block;
+    border-radius: 90px;
+    width: 60px;
+    height: 60px;
+}
+.leave{
+    width: 35px;
+    height: 35px;
+}
+.debateBtn{
+    margin-right: 30px;
+    margin-left: auto;
+}
+.RoomDebateClick{
+    font-size: 30px;
+    font-weight: bold;
+    width: 280px;
+    height: 60px;
+    border-radius: 47px;
+    border: #A2ACBD;
+    background-color: #A2ACBD;
+    color: white;
+}
+.RoomDebateSet{
+    font-size: 30px;
+    font-weight: bold;
+    width: 280px;
+    height: 60px;
+    border-radius: 47px;
+    border: #2196F3;
+    background-color: #2196F3;
+    color: white;
 }

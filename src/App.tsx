@@ -54,19 +54,19 @@ const App: React.FC = () => {
                        element={<LoginForm onLogin={handleLogin} onJoin={handleJoin} onRegister={register}/>}/>
 
                 <Route path="/dashboard" element={<Dashboard onDebateCreate={debateCreate} onLogout={logout}
-                                                             onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
-                <Route path="/debateRecord" element={<DebateRecord onBack={back} onDebateCreate={debateCreate} onDebateName={join}/>}/>
+                                                             onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
+                <Route path="/debateRecord" element={<DebateRecord onBack={back} onDebateCreate={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/usersetting" element={<UserSetting onDebateCreate={debateCreate} onLogout={logout}
-                                                                 onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                                                                 onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/DebateRule" element={<DebateRule onDebateCreate={debateCreate} onLogout={logout}
-                                                                 onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                                                                 onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/Payment" element={<Payment onDebateCreate={debateCreate} onLogout={logout}
-                                                               onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                                                               onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/Volume" element={<Volume onDebateCreate={debateCreate} onLogout={logout}
-                                                         onOpenDebateRecord={debateCreate} onDebateName={join}/>}/>
+                                                         onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/debateRoom" element={<DebateRoom onLeave={back}/>}/>
                 <Route path="/debateCreate"
-                       element={<Modal onButtonClick={debateCreate} onClose={back} onDebateName={join}/>}/>
+                       element={<Modal onButtonClick={debateCreate} onClose={back} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/SettingCreater" element={<SettingCreater onSubmit={signup}/>}/>
                 <Route path="/SettingMember" element={<SettingMember onSubmit={join}/>}/>
 
