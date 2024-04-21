@@ -10,6 +10,7 @@ import video from "../../image/video.svg"
 import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
+import DebateFin from "./DebateFin/DebateFin";
 
 interface DebateRoomProps {
     onLeave: () => void;
@@ -31,6 +32,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [soundImg, setSoundImg] = useState(speaker);
     const [videoImg, setVideoImg] = useState(video);
     const [micImg, setMicImg] = useState(mic);
+    const [showModal, setShowModal] = useState(false);
 
     const SoundClick = () => {
         if (soundClicked) {
@@ -61,14 +63,21 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     };
     const DebateClick = () => {
         if (DebateClicked) {
-            setDebateText("토론시작");
-            setDebateClicked(false); // 초기 상태 false 일 땐 초기 상태 이미지 src
+            setShowModal(true);
         } else {
             setDebateText("토론종료");
             setDebateClicked(true); // true일 땐 변경될 이미지 src
+
         }
     };
 
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+    const onDebateCreate = () => {
+        // 토론 생성 로직
+        handleCloseModal(); // 모달 닫기
+    };
     const options = [
         'A1',
         'A2',
@@ -99,11 +108,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
         },
     }));
-    const formatTime = (seconds: number) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60); // 소수점을 버림
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    };
+
     useEffect(() => {
         const totalTime = 3 * 60; // 3분을 초 단위로 변환
         let remainingTime = totalTime;
@@ -133,6 +138,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             clearInterval(timer);
         };
     }, []);
+
 
 
     return (
@@ -359,6 +365,9 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 <button className={DebateClicked ? "RoomDebateClick":"RoomDebateSet"} onClick={DebateClick}>
                     <text className="debateText" >{DebateText}</text>
                 </button>
+                    {showModal && (
+                        <DebateFin onClose={handleCloseModal} onButtonClick={onDebateCreate} />
+                    )}
                 </div>
             </div>
         </div>

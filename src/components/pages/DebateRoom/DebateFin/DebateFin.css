@@ -1,0 +1,31 @@
+.debateFin{
+    display: block;
+    width: 500px;
+    text-align: center;
+    margin-top: 50px;
+}
+.debateFinTxt{
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+}
+.debateFinSub{
+    margin-top: 40px;
+}
+.debateFinSubTxt{
+    font-size: 17px;
+
+}
+.finish{
+    text-align: center;
+}
+.finishButton{
+    margin-top: 115px;
+    width: 220px;
+    height: 65px;
+    font-size: 23px;
+    background-color: #0064BA;
+    border: 1px solid #0064BA;
+    border-radius: 10px;
+    color: white;
+}
