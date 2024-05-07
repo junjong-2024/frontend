@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useRef, useState} from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
 import "./DebateRoom.css"
 import {Box, LinearProgress, linearProgressClasses, styled, Typography,IconButton,Menu} from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
@@ -16,10 +16,14 @@ interface DebateRoomProps {
     onLeave: () => void;
 }
 
+
 const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [progress, setProgress] = React.useState(0);
     const [timeLeft, setTimeLeft] = useState('3:00');
     const navigate = useNavigate();
+    const location = useLocation();
+    const { selectedMicDevice, selectedAudioDevice, selectedVideoDevice } = location.state;
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const leave = () => {
         navigate('/dashboard');
@@ -78,6 +82,12 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         // 토론 생성 로직
         handleCloseModal(); // 모달 닫기
     };
+    const handleMenuItemClick = (option: string) => {
+        handleClose(); // 메뉴 닫기
+        // 선택한 옵션에 따라 다른 동작 수행
+        console.log(`Selected option: ${option}`);
+        // 다른 로직 추가 가능
+    };
     const options = [
         'A1',
         'A2',
@@ -85,6 +95,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         'B1',
         'B2',
         'B3'
+
     ];
     const ITEM_HEIGHT = 68;
 
@@ -139,6 +150,20 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         };
     }, []);
 
+    useEffect(() => {
+        // A1 비디오 설정
+        const initA1Video = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            } catch (error) {
+                console.error('Error accessing local media:', error);
+            }
+        };
+        initA1Video();
+    }, []);
 
 
     return (
@@ -166,7 +191,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             </div>
             <div className="AteamArea">
                 <div className="A1">
-                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default}/>
+                    <video className="Cam" ref={videoRef} autoPlay width="526px" height="332px" ></video>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -188,7 +213,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                            <MenuItem
+                                key={option}
+                                selected={option === 'A1'}
+                                onClick={() => handleMenuItemClick(option)}
+                            >
                                 {option}
                             </MenuItem>
                         ))}
@@ -217,7 +246,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                            <MenuItem
+                                key={option}
+                                selected={option === 'A1'}
+                                onClick={() => handleMenuItemClick(option)}
+                            >
                                 {option}
                             </MenuItem>
                         ))}
@@ -246,7 +279,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                            <MenuItem
+                                key={option}
+                                selected={option === 'A1'}
+                                onClick={() => handleMenuItemClick(option)}
+                            >
                                 {option}
                             </MenuItem>
                         ))}
@@ -277,7 +314,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                            <MenuItem
+                                key={option}
+                                selected={option === 'A1'}
+                                onClick={() => handleMenuItemClick(option)}
+                            >
                                 {option}
                             </MenuItem>
                         ))}
@@ -306,7 +347,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                            <MenuItem
+                                key={option}
+                                selected={option === 'A1'}
+                                onClick={() => handleMenuItemClick(option)}
+                            >
                                 {option}
                             </MenuItem>
                         ))}
@@ -335,7 +380,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
                     >
                         {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'A1'} onClick={handleClose}>
+                            <MenuItem
+                                key={option}
+                                selected={option === 'A1'}
+                                onClick={() => handleMenuItemClick(option)}
+                            >
                                 {option}
                             </MenuItem>
                         ))}

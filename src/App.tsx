@@ -12,8 +12,20 @@ import Payment from "./components/pages/Dashboard/Payment";
 import Volume from "./components/pages/Dashboard/Volume";
 import SettingCreater from "./components/pages/Setting/SettingCreater";
 import SettingMember from "./components/pages/Setting/SettingMember";
+import Tests from "./components/pages/test/test";
+import DebateMemberRoom from "./components/pages/DebateRoom/DebateMemberRoom";
+import {Device} from 'mediasoup-client'
+import io from "socket.io-client";
 
 const App: React.FC = () => {
+
+    const name = 'user';
+    const room_id= 'room_id'
+    const localMediaEl = document.getElementById('localMedia') as HTMLVideoElement | null;
+    const remoteVideoEl = document.getElementById('remoteVideo');
+    const remoteAudioEl = document.getElementById('remoteAudio');
+    const mediasoupClientInstance = new Device();
+    const socket = io();
     const handleLogin = (username: string, password: string) => {
         console.log('Logging in with:', username, password);
         // 여기에 로그인 처리 로직을 추가하세요.
@@ -65,11 +77,21 @@ const App: React.FC = () => {
                 <Route path="/Volume" element={<Volume onDebateCreate={debateCreate} onLogout={logout}
                                                          onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/debateRoom" element={<DebateRoom onLeave={back}/>}/>
+                <Route path="/debateMemberRoom" element={<DebateMemberRoom onLeave={back}/>}/>
+
                 <Route path="/debateCreate"
                        element={<Modal onButtonClick={debateCreate} onClose={back} onDebateName={join} onDebateContent={join}/>}/>
-                <Route path="/SettingCreater" element={<SettingCreater onSubmit={signup}/>}/>
+                <Route path="/SettingCreater" element={<SettingCreater onSubmit={signup}
+                                                                       name={name}
+                                                                       localMediaEl={localMediaEl}
+                                                                       remoteVideoEl={remoteVideoEl}
+                                                                       remoteAudioEl={remoteAudioEl}
+                                                                       mediasoupClient={mediasoupClientInstance}
+                                                                       room_id={room_id}
+                                                                       socket={socket}
+                                                                       successCallback={join}/>}/>
                 <Route path="/SettingMember" element={<SettingMember onSubmit={join}/>}/>
-
+                <Route path="/test" element={<Tests />}/>
 
             </Routes>
         </Router>

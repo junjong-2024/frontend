@@ -54,7 +54,6 @@
     margin-left: 40px;
 }
 .A2{
-    background-color: #2196F3;
     margin-left: 80px;
 }
 .A3{
@@ -91,6 +90,7 @@
 }
 .btnList{
     display: flex;
+    margin-right: 40px;
 }
 .RoomSoundSet{
     margin-right: 30px;
