@@ -164,8 +164,98 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         };
         initA1Video();
     }, []);
+    useEffect(() => {
+        // 오디오 음소거 처리
+        const toggleAudio = () => {
+            if (videoRef.current && videoRef.current.srcObject) {
+                const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+                tracks.forEach(track => {
+                    if (track.kind === 'audio') {
+                        track.enabled = !soundClicked; // soundClicked가 true이면 음소거, false이면 활성화
+                    }
+                });
+            }
+        };
 
+        // 마이크 클릭 상태 변경
+        const toggleMicClicked = () => {
+            if (soundClicked) {
+                setMicImg(micMute);
+                setMicClicked(true); // soundClicked가 true이면 micClicked를 true로 설정
+            }
+        };
+        const toggleMicUnclicked = () => {
+            if (soundClicked) {
+                setMicImg(mic);
+                setMicClicked(false);
+            }
+        };
+        toggleAudio(); // 초기 렌더링 시 오디오 상태에 따라 트랙 활성화/비활성화
+        toggleMicClicked(); // 초기 렌더링 시 마이크 클릭 상태 설정
 
+        return () => {
+            // 컴포넌트 언마운트 시 이벤트 핸들러 정리
+            toggleMicUnclicked();
+            toggleAudio();
+        };
+    }, [soundClicked]);
+    useEffect(() => {
+        // 마이크 음소거 처리
+        const toggleMicrophone = () => {
+            if (videoRef.current && videoRef.current.srcObject) {
+                const tracks = (videoRef.current.srcObject as MediaStream).getAudioTracks();
+                tracks.forEach(track => {
+                    track.enabled = !micClicked;
+                });
+            }
+        };
+        const toggleInsteadClicked = () => {
+            if (micClicked) {
+                if (soundClicked) {
+                    setSoundImg(speaker);
+                    setSoundClicked(false); // 마이크가 음소거 상태이고 오디오가 음소거 상태일 때 마이크 버튼을 누르면 오디오 음소거가 해제됩니다.
+                }
+            }
+        };
+
+        toggleMicrophone(); // 초기 렌더링 시 마이크 상태에 따라 트랙 활성화/비활성화
+
+        return () => {
+            // 컴포넌트 언마운트 시 이벤트 핸들러 정리
+            toggleInsteadClicked();
+            toggleMicrophone();
+        };
+    }, [micClicked]);
+    useEffect(() => {
+        const initA1Video = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            } catch (error) {
+                console.error('Error accessing local media:', error);
+            }
+        };
+
+        const toggleVideo = () => {
+            if (videoRef.current) {
+                if (videoClicked) {
+                    // 비디오를 안 보이도록 설정
+                    videoRef.current.srcObject = null;
+                } else {
+                    // 비디오를 다시 보이도록 설정
+                    initA1Video();
+                }
+            }
+        };
+
+        toggleVideo(); // 초기 렌더링 시에도 toggleVideo 함수를 호출합니다.
+
+        return () => {
+            // 필요에 따라 정리 작업을 수행할 수 있습니다.
+        };
+    }, [videoClicked]);
     return (
         <div>
             <div className="lineTop">

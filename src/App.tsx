@@ -22,8 +22,8 @@ const App: React.FC = () => {
     const name = 'user';
     const room_id= 'room_id'
     const localMediaEl = document.getElementById('localMedia') as HTMLVideoElement | null;
-    const remoteVideoEl = document.getElementById('remoteVideo');
-    const remoteAudioEl = document.getElementById('remoteAudio');
+    const remoteVideoEl = document.getElementById('remoteVideo')as HTMLVideoElement | null;
+    const remoteAudioEl = document.getElementById('remoteAudio')as HTMLVideoElement | null;
     const mediasoupClientInstance = new Device();
     const socket = io();
     const handleLogin = (username: string, password: string) => {
@@ -90,7 +90,15 @@ const App: React.FC = () => {
                                                                        room_id={room_id}
                                                                        socket={socket}
                                                                        successCallback={join}/>}/>
-                <Route path="/SettingMember" element={<SettingMember onSubmit={join}/>}/>
+                <Route path="/SettingMember" element={<SettingMember onSubmit={signup}
+                                                                     name={name}
+                                                                     localMediaEl={localMediaEl}
+                                                                     remoteVideoEl={remoteVideoEl}
+                                                                     remoteAudioEl={remoteAudioEl}
+                                                                     mediasoupClient={mediasoupClientInstance}
+                                                                     room_id={room_id}
+                                                                     socket={socket}
+                                                                     successCallback={join}/>}/>
                 <Route path="/test" element={<Tests />}/>
 
             </Routes>

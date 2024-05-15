@@ -42,28 +42,13 @@
 .signUpPwd::placeholder{
     color: black;
 }
-/*
-.signUpPwdConfirm{
-    margin-top: 40px;
-    background-image: url("../../image/image 1.svg");
-    background-repeat: no-repeat;
-    background-color: #D9D9D9;
-    padding-left: 80px;
-    width: 1400px;
-    height: 70px;
-    font-size: 23px;
-    border: 3px solid #D9D9D9;
-    border-radius: 10px;
-}
-.signUpPwdConfirm::placeholder{
-    color: black;
-}
-*/
+
+
 .signUpEmail{
     margin-top: 40px;
     background-image: url("../../image/email.svg");
     background-repeat: no-repeat;
-    background-color: #D9D9D9;
+    background-color: white;
     padding-left: 80px;
     width: 1400px;
     height: 70px;
@@ -90,9 +75,9 @@
 .signUpName::placeholder{
     color: black;
 }
-.PhoneNumber{
+.ConfirmPassword{
     margin-top: 40px;
-    background-image: url("../../image/image 2.svg");
+    background-image: url("../../image/image 1.svg");
     background-repeat: no-repeat;
     background-color: #D9D9D9;
     padding-left: 80px;
@@ -102,7 +87,7 @@
     border: 3px solid #D9D9D9;
     border-radius: 10px;
 }
-.PhoneNumber::placeholder{
+.ConfirmPassword::placeholder{
     color: black;
 }
 

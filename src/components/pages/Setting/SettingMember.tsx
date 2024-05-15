@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import "./SettingMember.css"
 import speaker from "../../image/speaker.svg"
@@ -10,10 +10,26 @@ import micMute from "../../image/micmute.svg"
 
 
 interface SettingMemberProps {
+    name: string;
+    localMediaEl: HTMLVideoElement | null;
+    remoteVideoEl: HTMLVideoElement | null;
+    remoteAudioEl: HTMLVideoElement | null;
+    mediasoupClient: any;
+    socket: any;
+    room_id: string;
+    successCallback: () => void;
     onSubmit: (name: string) => void;
 }
 
-const SettingMember: React.FC<SettingMemberProps> = ({onSubmit}) => {
+const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
+                                                         successCallback,
+                                                         name,
+                                                         room_id,
+                                                         localMediaEl,
+                                                         remoteVideoEl,
+                                                         remoteAudioEl,
+                                                         mediasoupClient,
+                                                         socket}) => {
     const navigate = useNavigate();
     const [nickname, setNickName] = useState('');
     const [soundClicked, setSoundClicked] = useState(false);
@@ -22,7 +38,71 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit}) => {
     const [soundImg, setSoundImg] = useState(speaker);
     const [videoImg, setVideoImg] = useState(video);
     const [micImg, setMicImg] = useState(mic);
+    const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
+    const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
+    const [micDevices, setMicDevices] = useState<MediaDeviceInfo[]>([]);
+    const [selectedMicDevice, setSelectedMicDevice] = useState<string>('');
+    const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>('');
+    const [selectedVideoDevice, setSelectedVideoDevice] = useState<string>('');
+    useEffect(() => {
+        const getLocalMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                if (localMediaEl) {
+                    // Assign the local media stream to the video element
+                    localMediaEl.srcObject = stream;
+                }
+            } catch (error) {
+                console.error('Error accessing local media:', error);
+            }
+        };
+        getLocalMedia();
+    }, [localMediaEl]);
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 실행
+        const getDevices = async () => {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const audioDevices = devices.filter(device => device.kind === 'audioinput');
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                const micDevices = devices.filter(device => device.kind === 'audioinput');
 
+                setAudioDevices(audioDevices);
+                setVideoDevices(videoDevices);
+                setMicDevices(micDevices);
+                console.error(audioDevices);
+                console.error(micDevices);
+            } catch (error) {
+                console.error('Error enumerating media devices:', error);
+            }
+        };
+
+        getDevices();
+        const requestMicPermission = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+                console.log('오디오 및 마이크 권한이 허용되었습니다.');
+                stream.getTracks().forEach(track => track.stop());
+            } catch (error) {
+                console.log('오디오 및 마이크 권한이 허용되었습니다.');
+            }
+        };
+        requestMicPermission();
+    }, []);
+    const handleMicChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedMicDevice(event.target.value);
+        // 선택된 마이크 디바이스와 연결하는 작업 추가
+    };
+
+    const handleAudioChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedAudioDevice(event.target.value);
+        // 선택된 오디오 디바이스와 연결하는 작업 추가
+    };
+
+    const handleVideoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedVideoDevice(event.target.value);
+        // 선택된 비디오 디바이스와 연결하는 작업 추가
+    };
     const SoundClick = () => {
         if (soundClicked) {
             setSoundImg(speaker);
@@ -52,9 +132,55 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit}) => {
     };
 
     const onClickCreate = () => {
-        navigate('/debateRoom');
+        navigate('/debateRoom', {
+            state: {
+                name,
+                selectedMicDevice,
+                selectedAudioDevice,
+                selectedVideoDevice
+            }
+        });
     };
+    useEffect(() => {
+        // 오디오 음소거 처리
+        const toggleAudio = () => {
+            if (localMediaEl && localMediaEl.srcObject) {
+                const tracks = (localMediaEl.srcObject as MediaStream).getTracks();
+                tracks.forEach(track => {
+                    if (track.kind === 'audio') {
+                        track.enabled = !soundClicked; // soundClicked가 true이면 음소거, false이면 활성화
+                    }
+                });
+            }
+        };
 
+        // 비디오 음소거 처리
+        const toggleVideo = () => {
+            if (localMediaEl && localMediaEl.srcObject) {
+                const tracks = (localMediaEl.srcObject as MediaStream).getTracks();
+                tracks.forEach(track => {
+                    if (track.kind === 'video') {
+                        track.enabled = !videoClicked; // videoClicked가 true이면 비디오 음소거, false이면 활성화
+                    }
+                });
+            }
+        };
+
+        // 마이크 음소거 처리
+        const toggleMicrophone = () => {
+            if (localMediaEl && localMediaEl.srcObject) {
+                const audioTracks = (localMediaEl.srcObject as MediaStream).getAudioTracks();
+                audioTracks.forEach(track => {
+                    track.enabled = !micClicked; // micClicked가 true이면 마이크 음소거, false이면 활성화
+                });
+            }
+        };
+
+        toggleAudio();
+        toggleVideo();
+        toggleMicrophone();
+
+    }, [soundClicked, videoClicked, micClicked, localMediaEl]);
     return (
         <div>
             <div className="Logo">
@@ -66,7 +192,7 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit}) => {
             <div className="top">
 
                 <div className="cam">
-                    <img className="privateCam" src={require("../../image/cam.svg").default}/>
+                    <video className="privateCam" ref={(el) => { if (el) localMediaEl = el; }} autoPlay muted></video>
                 </div>
                 <div className="otherButton">
                     <button className={soundClicked ?"soundClick" : "SoundSet"} onClick={SoundClick}>
@@ -80,21 +206,23 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit}) => {
                     </button>
                 </div>
                 <div className="setSelect">
-                    <select name="soundChoice" className="soundChoice">
+                    <select name="soundChoice" className="soundChoice" onChange={handleAudioChange} value={selectedAudioDevice} >
                         <option disabled selected>헤드셋 설정</option>
-                        <option value="sound1">기본 헤드셋1</option>
-                        <option value="sound2">기본 헤드셋2</option>
-                        <option value="sound3">기본 헤드셋3</option>
+                        {audioDevices.map(device => (
+                            <option key={device.deviceId} value={device.deviceId}>{device.label || device.deviceId}</option>
+                        ))}
                     </select>
-                    <select name="videoChoice" className="videoChoice">
+                    <select name="videoChoice" className="videoChoice" onChange={handleVideoChange} value={selectedVideoDevice}>
                         <option disabled selected>비디오 설정</option>
-                        <option value="video1">기본 비디오1</option>
-                        <option value="video2">기본 비디오2</option>
+                        {videoDevices.map(device => (
+                            <option key={device.deviceId} value={device.deviceId}>{device.label || device.deviceId}</option>
+                        ))}
                     </select>
-                    <select name="micChoice" className="micChoice">
+                    <select name="micChoice" className="micChoice" onChange={handleMicChange} value={selectedMicDevice} >
                         <option disabled selected>마이크 설정</option>
-                        <option value="mic1">기본 마이크1</option>
-                        <option value="mic2">기본 마이크2</option>
+                        {micDevices.map(device => (
+                            <option key={device.deviceId} value={device.deviceId}>{device.label || device.deviceId}</option>
+                        ))}
                     </select>
                 </div>
 

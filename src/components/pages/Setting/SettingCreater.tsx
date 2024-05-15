@@ -12,8 +12,8 @@ import io from 'socket.io-client'
 interface SettingCreaterProps {
     name: string;
     localMediaEl: HTMLVideoElement | null;
-    remoteVideoEl: HTMLElement | null;
-    remoteAudioEl: HTMLElement | null;
+    remoteVideoEl: HTMLVideoElement | null;
+    remoteAudioEl: HTMLVideoElement | null;
     mediasoupClient: any;
     socket: any;
     room_id: string;
@@ -142,7 +142,46 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
             }
         });
     };
+    useEffect(() => {
+        // 오디오 음소거 처리
+        const toggleAudio = () => {
+            if (localMediaEl && localMediaEl.srcObject) {
+                const tracks = (localMediaEl.srcObject as MediaStream).getTracks();
+                tracks.forEach(track => {
+                    if (track.kind === 'audio') {
+                        track.enabled = !soundClicked; // soundClicked가 true이면 음소거, false이면 활성화
+                    }
+                });
+            }
+        };
 
+        // 비디오 음소거 처리
+        const toggleVideo = () => {
+            if (localMediaEl && localMediaEl.srcObject) {
+                const tracks = (localMediaEl.srcObject as MediaStream).getTracks();
+                tracks.forEach(track => {
+                    if (track.kind === 'video') {
+                        track.enabled = !videoClicked; // videoClicked가 true이면 비디오 음소거, false이면 활성화
+                    }
+                });
+            }
+        };
+
+        // 마이크 음소거 처리
+        const toggleMicrophone = () => {
+            if (localMediaEl && localMediaEl.srcObject) {
+                const audioTracks = (localMediaEl.srcObject as MediaStream).getAudioTracks();
+                audioTracks.forEach(track => {
+                    track.enabled = !micClicked; // micClicked가 true이면 마이크 음소거, false이면 활성화
+                });
+            }
+        };
+
+        toggleAudio();
+        toggleVideo();
+        toggleMicrophone();
+
+    }, [soundClicked, videoClicked, micClicked, localMediaEl]);
     return (
         <div>
             <div className="Logo">

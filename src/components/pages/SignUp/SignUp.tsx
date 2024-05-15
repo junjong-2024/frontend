@@ -13,12 +13,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({onSubmit}) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
 
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        onSubmit(name, username, password, email,phone);
+        onSubmit(name, username, password, email,confirmPassword);
         navigate('/LoginPage'); // /LoginPage 페이지로 이동
     };
 
@@ -34,6 +33,17 @@ const SignUpForm: React.FC<SignUpFormProps> = ({onSubmit}) => {
                 <text className="Text">회원가입</text>
             </div>
             <form  className="signUpList" onSubmit={handleFormSubmit}>
+                <div>
+                    <input
+                        className="signUpName"
+                        placeholder="이름"
+                        type="text"
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                </div>
                 <div>
                     <input
                         className="signUpUsername"
@@ -58,6 +68,17 @@ const SignUpForm: React.FC<SignUpFormProps> = ({onSubmit}) => {
                 </div>
                 <div>
                     <input
+                        className="ConfirmPassword"
+                        placeholder="비밀번호 확인"
+                        type="text"
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <input
                         className="signUpEmail"
                         placeholder="이메일 주소"
                         type="text"
@@ -67,28 +88,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({onSubmit}) => {
                         required
                     />
                 </div>
-                <div>
-                    <input
-                        className="signUpName"
-                        placeholder="이름"
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        className="PhoneNumber"
-                        placeholder="휴대전화번호"
-                        type="text"
-                        id="phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        required
-                    />
-                </div>
+
+
 
                 <button className="SignUp" type="submit">가입하기</button>
 
