@@ -14,6 +14,7 @@ import SettingCreater from "./components/pages/Setting/SettingCreater";
 import SettingMember from "./components/pages/Setting/SettingMember";
 import Tests from "./components/pages/test/test";
 import DebateMemberRoom from "./components/pages/DebateRoom/DebateMemberRoom";
+
 import {Device} from 'mediasoup-client'
 import io from "socket.io-client";
 
@@ -21,11 +22,12 @@ const App: React.FC = () => {
 
     const name = 'user';
     const room_id= 'room_id'
-    const localMediaEl = document.getElementById('localMedia') as HTMLVideoElement | null;
-    const remoteVideoEl = document.getElementById('remoteVideo')as HTMLVideoElement | null;
-    const remoteAudioEl = document.getElementById('remoteAudio')as HTMLVideoElement | null;
+    const localMediaEl = document.getElementById('localMedia') as HTMLVideoElement ;
+    const remoteVideoEl = document.getElementById('remoteVideo')as HTMLVideoElement ;
+    const remoteAudioEl = document.getElementById('remoteAudio')as HTMLVideoElement ;
     const mediasoupClientInstance = new Device();
     const socket = io();
+
     const handleLogin = (username: string, password: string) => {
         console.log('Logging in with:', username, password);
         // 여기에 로그인 처리 로직을 추가하세요.

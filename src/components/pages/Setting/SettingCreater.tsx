@@ -8,12 +8,13 @@ import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import io from 'socket.io-client'
+import RoomClient from "../../socket/RoomClient"
 
 interface SettingCreaterProps {
     name: string;
-    localMediaEl: HTMLVideoElement | null;
-    remoteVideoEl: HTMLVideoElement | null;
-    remoteAudioEl: HTMLVideoElement | null;
+    localMediaEl: HTMLVideoElement ;
+    remoteVideoEl: HTMLVideoElement ;
+    remoteAudioEl: HTMLVideoElement ;
     mediasoupClient: any;
     socket: any;
     room_id: string;
@@ -21,17 +22,16 @@ interface SettingCreaterProps {
     onSubmit: (name: string) => void;
 }
 
+
 const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                                                            successCallback,
-                                                           name,
                                                            room_id,
                                                            localMediaEl,
                                                            remoteVideoEl,
                                                            remoteAudioEl,
-                                                           mediasoupClient,
-                                                           socket}) => {
+                                                           mediasoupClient}) => {
     const navigate = useNavigate();
-    const [nickname, setNickName] = useState('');
+    const [name, setName] = useState('');
     const [soundClicked, setSoundClicked] = useState(false);
     const [videoClicked, setVideoClicked] = useState(false);
     const [micClicked, setMicClicked] = useState(false);
@@ -44,6 +44,9 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     const [selectedMicDevice, setSelectedMicDevice] = useState<string>('');
     const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>('');
     const [selectedVideoDevice, setSelectedVideoDevice] = useState<string>('');
+    const [roomId, setRoomId] = useState('');
+    const [response, setResponse] = useState('');
+
 
     useEffect(() => {
         const getLocalMedia = async () => {
@@ -59,6 +62,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
         };
         getLocalMedia();
     }, [localMediaEl]);
+
     useEffect(() => {
         // 컴포넌트가 마운트될 때 실행
         const getDevices = async () => {
@@ -133,6 +137,8 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     };
 
     const onClickCreate = () => {
+        const client = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", room_id, name, successCallback);
+
         navigate('/debateRoom', {
             state: {
                 name,
@@ -141,7 +147,10 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                 selectedVideoDevice
             }
         });
+        client.createRoom("frontend",name);
+        console.log(name);
     };
+
     useEffect(() => {
         // 오디오 음소거 처리
         const toggleAudio = () => {
@@ -234,9 +243,9 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                     <input
                         className="nicknameInput"
                         type="text"
-                        id="nickname"
-                        value={nickname}
-                        onChange={(e) => setNickName(e.target.value)}
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
 

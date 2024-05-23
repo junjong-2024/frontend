@@ -7,7 +7,9 @@ import video from "../../image/video.svg"
 import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
-
+import io from "socket.io-client";
+import { setupSocket, CustomSocket } from '../../socket/socket';
+import * as mediasoupClient from 'mediasoup-client';
 
 interface SettingMemberProps {
     name: string;
@@ -23,15 +25,13 @@ interface SettingMemberProps {
 
 const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
                                                          successCallback,
-                                                         name,
                                                          room_id,
                                                          localMediaEl,
                                                          remoteVideoEl,
                                                          remoteAudioEl,
-                                                         mediasoupClient,
-                                                         socket}) => {
+                                                         mediasoupClient}) => {
     const navigate = useNavigate();
-    const [nickname, setNickName] = useState('');
+    const [name, setName] = useState('');
     const [soundClicked, setSoundClicked] = useState(false);
     const [videoClicked, setVideoClicked] = useState(false);
     const [micClicked, setMicClicked] = useState(false);
@@ -44,6 +44,10 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
     const [selectedMicDevice, setSelectedMicDevice] = useState<string>('');
     const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>('');
     const [selectedVideoDevice, setSelectedVideoDevice] = useState<string>('');
+    const [roomId, setRoomId] = useState('');
+    const [response, setResponse] = useState('');
+    const socket = setupSocket(io('http://localhost:3001'));
+
     useEffect(() => {
         const getLocalMedia = async () => {
             try {
@@ -132,6 +136,24 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
     };
 
     const onClickCreate = () => {
+
+        console.log(name);
+        socket.emit('join', { room_id: "frontend", name }, (response: React.SetStateAction<string>) => {
+            const data=socket.request('getRouterRtpCapabilities');
+            let device=createDevice(data);
+            setResponse(response);
+        });
+        const createDevice = async (data:any) => {
+            let device;
+            try {
+                device = new mediasoupClient.Device();
+                await device.load({data});
+            } catch (error) {
+                console.log(error);
+            }
+            return device;
+        };
+
         navigate('/debateRoom', {
             state: {
                 name,
@@ -140,6 +162,7 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
                 selectedVideoDevice
             }
         });
+
     };
     useEffect(() => {
         // 오디오 음소거 처리
@@ -233,9 +256,9 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
                     <input
                         className="nicknameInput"
                         type="text"
-                        id="nickname"
-                        value={nickname}
-                        onChange={(e) => setNickName(e.target.value)}
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
 
