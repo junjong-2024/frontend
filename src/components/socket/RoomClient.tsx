@@ -109,29 +109,33 @@ class RoomClient {
     }
 
     async join(name: string, room_id: string) {
-        await this.socket.request('join', { name, room_id }).then(async (e: any) => {
+        try {
+            const e: any = await this.socket.request('join', { name, room_id });
             if (e.hasOwnProperty('error')) {
                 return Promise.reject(new Error('The room is full!'));
             }
             console.log('Joined to room', e);
-            document.getElementById('maxCount')!.innerHTML = `${e.maxCount}`;
-            try {
-                const data = await this.socket.request('getRouterRtpCapabilities');
-                const device = await this.loadDevice(data);
-                this.device = device;
-                await this.initTransports(device);
-                this.socket.emit('getProducers');
-            } catch (error) {
-                console.error('Failed to load device:', error);
-                alert('Failed to join the room');
-            }
-        });
+
+
+            const data = await this.socket.request('getRouterRtpCapabilities');
+            const device = await this.loadDevice(data);
+            this.device = device;
+            await this.initTransports(device);
+            this.socket.emit('getProducers');
+        } catch (error) {
+            console.error('Failed to load device:', error);
+            alert('Failed to join the room');
+        }
     }
+
 
     async loadDevice(routerRtpCapabilities: mediasoupClient.types.RtpCapabilities): Promise<mediasoupClient.Device> {
         let device: mediasoupClient.Device;
+        console.log("check")
+
         try {
-            device = new this.mediasoupClient.Device();
+            device = new mediasoupClient.Device();
+
         } catch (error: any) {
             if (error.name === 'UnsupportedError') {
                 console.error('Browser not supported');
