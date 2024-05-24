@@ -7,7 +7,6 @@ import video from "../../image/video.svg"
 import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
-import io from 'socket.io-client'
 import RoomClient from "../../socket/RoomClient"
 
 interface SettingCreaterProps {
@@ -46,6 +45,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     const [selectedVideoDevice, setSelectedVideoDevice] = useState<string>('');
     const [roomId, setRoomId] = useState('');
     const [response, setResponse] = useState('');
+    const [token, setToken] = useState<string | null>(null);
 
 
     useEffect(() => {
@@ -136,8 +136,40 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
         }
     };
 
-    const onClickCreate = () => {
+    const onClickCreate = async () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            console.error('No token found in local storage');
+            return;
+        }
+
         const client = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", room_id, name, successCallback);
+
+        // Send token to localhost:8080
+        try {
+            const response = await fetch('http://localhost:8080/room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    room_id,
+                    name
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send token');
+            }
+
+            const data = await response.json();
+            console.log('Token sent successfully:', data);
+        } catch (error) {
+            console.error('Error sending token:', error);
+            alert('토큰을 보내는 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
 
         navigate('/debateRoom', {
             state: {
@@ -147,9 +179,11 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                 selectedVideoDevice
             }
         });
-        client.createRoom("frontend",name);
+
+        client.createRoom("frontend", name);
         console.log(name);
     };
+
 
     useEffect(() => {
         // 오디오 음소거 처리

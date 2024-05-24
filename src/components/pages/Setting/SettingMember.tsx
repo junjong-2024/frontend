@@ -9,13 +9,13 @@ import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import io from "socket.io-client";
 import { setupSocket, CustomSocket } from '../../socket/socket';
-import * as mediasoupClient from 'mediasoup-client';
+import RoomClient from "../../socket/RoomClient"
 
 interface SettingMemberProps {
     name: string;
-    localMediaEl: HTMLVideoElement | null;
-    remoteVideoEl: HTMLVideoElement | null;
-    remoteAudioEl: HTMLVideoElement | null;
+    localMediaEl: HTMLVideoElement ;
+    remoteVideoEl: HTMLVideoElement ;
+    remoteAudioEl: HTMLVideoElement ;
     mediasoupClient: any;
     socket: any;
     room_id: string;
@@ -136,24 +136,8 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
     };
 
     const onClickCreate = () => {
-
-        console.log(name);
-        socket.emit('join', { room_id: "frontend", name }, (response: React.SetStateAction<string>) => {
-            const data=socket.request('getRouterRtpCapabilities');
-            let device=createDevice(data);
-            setResponse(response);
-        });
-        const createDevice = async (data:any) => {
-            let device;
-            try {
-                device = new mediasoupClient.Device();
-                await device.load({data});
-            } catch (error) {
-                console.log(error);
-            }
-            return device;
-        };
-
+        const client = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", room_id, name, successCallback);
+        client.join(name,"frontend");
         navigate('/debateRoom', {
             state: {
                 name,
