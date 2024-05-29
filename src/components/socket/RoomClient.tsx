@@ -53,6 +53,11 @@ class RoomClient {
     private producerLabel: Map<string, string> = new Map();
     private _isOpen: boolean = false;
     private eventListeners: Map<string, Array<() => void>> = new Map();
+    static mediaType = {
+        audio: 'audioType',
+        video: 'videoType',
+        screen: 'screenType'
+    };
 
     constructor(
         localMediaEl: HTMLVideoElement ,
@@ -77,10 +82,23 @@ class RoomClient {
         Object.keys(_EVENTS).forEach((evt) => {
             this.eventListeners.set(evt, []);
         });
+        this.createRoom(room_id, name).then(async () => {
+            try {
+                await this.join(name, room_id);
+                this.initSockets();
+                this._isOpen = true;
+                console.log("create room")
+                successCallback();
+            } catch(ex) {
+                alert('The room is full!');
+            }
+        });
 
     }
 
     private mediasoupClient: typeof mediasoupClient;
+
+
 
     ////////// INIT /////////
 

@@ -11,6 +11,8 @@ import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import DebateFin from "./DebateFin/DebateFin";
+import RoomClient from "../../socket/RoomClient";
+import {rc} from "../../socket/socket";
 
 interface DebateRoomProps {
     onLeave: () => void;
@@ -151,19 +153,21 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     }, []);
 
     useEffect(() => {
-        // A1 비디오 설정
-        const initA1Video = async () => {
+        const initVideo = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
+                    // RoomClient에서 비디오 생성
+                    await rc.produce(RoomClient.mediaType.video, selectedVideoDevice);
                 }
             } catch (error) {
                 console.error('Error accessing local media:', error);
             }
         };
-        initA1Video();
-    }, []);
+
+        initVideo();
+    }, [selectedVideoDevice]);
     useEffect(() => {
         // 오디오 음소거 처리
         const toggleAudio = () => {
@@ -256,6 +260,8 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             // 필요에 따라 정리 작업을 수행할 수 있습니다.
         };
     }, [videoClicked]);
+
+
     return (
         <div>
             <div className="lineTop">

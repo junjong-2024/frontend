@@ -8,8 +8,7 @@ import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import io from "socket.io-client";
-import { setupSocket, CustomSocket } from '../../socket/socket';
-import RoomClient from "../../socket/RoomClient"
+import {setupSocket, CustomSocket, joinRoom} from '../../socket/socket';
 
 interface SettingMemberProps {
     name: string;
@@ -136,8 +135,8 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
     };
 
     const onClickCreate = () => {
-        const client = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", room_id, name, successCallback);
-        client.join(name,"frontend");
+        joinRoom(name,"frontend",selectedAudioDevice,selectedVideoDevice,localMediaEl,remoteVideoEl,remoteAudioEl,mediasoupClient,"http://localhost:3001",successCallback)
+
         navigate('/debateRoom', {
             state: {
                 name,
