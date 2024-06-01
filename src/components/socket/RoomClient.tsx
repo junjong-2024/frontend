@@ -10,7 +10,7 @@ const mediaType = {
     video: 'videoType',
     screen: 'screenType'
 };
-
+export const remoteVideoEls: HTMLVideoElement[] = [];
 const _EVENTS = {
     exitRoom: 'exitRoom',
     openRoom: 'openRoom',
@@ -40,7 +40,7 @@ class RoomClient {
     private name: string;
     private localMediaEl: HTMLVideoElement ;
     private remoteVideoEl: HTMLVideoElement ;
-    private remoteAudioEl: HTMLVideoElement ;
+    private remoteAudioEl: HTMLAudioElement ;
     private socket: any;
     private producerTransport: types.Transport | null = null;
     private consumerTransport: types.Transport | null = null;
@@ -60,9 +60,9 @@ class RoomClient {
     };
 
     constructor(
-        localMediaEl: HTMLVideoElement ,
-        remoteVideoEl: HTMLVideoElement ,
-        remoteAudioEl: HTMLVideoElement ,
+        localMediaEl: HTMLVideoElement,
+        remoteVideoEl: HTMLVideoElement,
+        remoteAudioEl: HTMLAudioElement,
         mediasoupClientInstance: typeof mediasoupClient,
         socketUrl: string,
         room_id: string,
@@ -110,20 +110,15 @@ class RoomClient {
         });
     }
 
-    async createRoom(room_id: string, name: string) {
-        await this.socket.request('createRoom', { room_id, name })
-            .then(async () => {
-                try {
-                    await this.join(name, room_id);
-                    this.initSockets();
-                    this._isOpen = true;
-                } catch (ex) {
-                    alert('The room is full!');
-                }
-            })
-            .catch((err: any) => {
-                console.log('Create room error:', err);
+    async createRoom(room_id: string, name: string): Promise<void> {
+        try {
+            await this.socket.request('createRoom', {
+                room_id,
+                name
             });
+        } catch (err) {
+            console.log('Create room error:', err);
+        }
     }
 
     async join(name: string, room_id: string) {
@@ -297,6 +292,7 @@ class RoomClient {
     //////// MAIN FUNCTIONS 토론방 입장할때 호출 /////////////
 
     async produce(type: string, deviceId: string | null = null) {
+        console.log("produceproduce");
         let mediaConstraints: any = {};
         let audio = false;
         let screen = false;
@@ -365,6 +361,7 @@ class RoomClient {
                 elem.autoplay = true;
                 elem.className = 'vid';
                 this.localMediaEl.appendChild(elem);
+                console.log(elem+ "일단은 눈에 띄어야한다")
             }
 
             producer.on('trackended', () => {
@@ -406,24 +403,32 @@ class RoomClient {
             console.log(err);
         }
     }
+
     async consume(producer_id: string) {
         try {
-            // @ts-ignore
+
             const { consumer, stream, kind } = await this.getConsumeStream(producer_id);
-
             this.consumers.set(consumer.id, consumer);
-
             let elem: HTMLVideoElement | HTMLAudioElement;
             if (kind === 'video') {
                 elem = document.createElement('video');
                 elem.srcObject = stream;
                 elem.id = consumer.id;
+
                 if ("playsInline" in elem) {
                     elem.playsInline = false;
                 } // For video
                 elem.autoplay = true;
                 elem.className = 'vid';
+                remoteVideoEls.push(elem as HTMLVideoElement);
+
+                // 원하는 내용 확인
+                console.log("Remote Video Elements:");
+                remoteVideoEls.forEach((el, index) => {
+                    console.log(`Element ${index + 1}:`, el);
+                });
                 this.remoteVideoEl.appendChild(elem);
+                console.log(elem+ "일단은 눈에 띄어야한다 비디오2")
             } else {
                 elem = document.createElement('audio');
                 elem.srcObject = stream;
@@ -435,6 +440,7 @@ class RoomClient {
                     elem.playsInline = false;
                 }
                 this.remoteAudioEl.appendChild(elem);
+                console.log(elem+ "일단은 눈에 띄어야한다33333333")
             }
 
             consumer.on('trackended', () => {
@@ -449,48 +455,30 @@ class RoomClient {
         }
     }
 
-    async getConsumeStream(producer_id: string) {
+    async getConsumeStream(producerId: string): Promise<ConsumeResult> {
         const { rtpCapabilities } = this.device!;
         const data = await this.socket.request('consume', {
             rtpCapabilities,
             consumerTransportId: this.consumerTransport!.id,
-            producerId: producer_id
+            producerId
         });
-
         const { id, kind, rtpParameters } = data;
-        let codecOptions = {};
+
         const consumer = await this.consumerTransport!.consume({
             id,
-            producerId: producer_id,
+            producerId,
             kind,
             rtpParameters,
-            // @ts-ignore
-            codecOptions
         });
 
+        const stream = new MediaStream();
+        stream.addTrack(consumer.track);
 
-
-        this.consumers.set(consumer.id, consumer);
-
-        const elem = kind === 'video' ? document.createElement('video') : document.createElement('audio');
-        elem.srcObject = new MediaStream([consumer.track]);
-        elem.id = consumer.id;
-        if ("playsInline" in elem) {
-            // Some browsers might support it, so set it to false if available
-            elem.playsInline = true;
-        }
-        elem.autoplay = true;
-        elem.controls = false;
-
-        this.remoteVideoEl.appendChild(elem);
-
-        consumer.on('trackended', () => {
-            this.removeConsumer(consumer.id);
-        });
-
-        consumer.on('transportclose', () => {
-            this.removeConsumer(consumer.id);
-        });
+        return {
+            consumer,
+            stream,
+            kind
+        };
     }
 
     closeProducer(type: string) {

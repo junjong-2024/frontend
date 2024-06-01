@@ -61,6 +61,7 @@ const App: React.FC = () => {
         // 여기에 입장 처리 로직을 추가하세요.
     };
     return (
+
         <Router>
             <Routes>
                 <Route path="/signUp" element={<SignUpForm onSubmit={signup}/>}/>
@@ -78,6 +79,7 @@ const App: React.FC = () => {
                                                                onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
                 <Route path="/Volume" element={<Volume onDebateCreate={debateCreate} onLogout={logout}
                                                          onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
+
                 <Route path="/debateRoom" element={<DebateRoom onLeave={back}/>}/>
                 <Route path="/debateMemberRoom" element={<DebateMemberRoom onLeave={back}/>}/>
 

@@ -11,7 +11,7 @@ import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import DebateFin from "./DebateFin/DebateFin";
-import RoomClient from "../../socket/RoomClient";
+import RoomClient, { remoteVideoEls } from "../../socket/RoomClient";
 import {rc} from "../../socket/socket";
 
 interface DebateRoomProps {
@@ -26,6 +26,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const location = useLocation();
     const { selectedMicDevice, selectedAudioDevice, selectedVideoDevice } = location.state;
     const videoRef = useRef<HTMLVideoElement>(null);
+    const videoRef1 = useRef<HTMLVideoElement>(null);
+    const videoRef2 = useRef<HTMLVideoElement>(null);
+    const videoRef3 = useRef<HTMLVideoElement>(null);
+    const videoRef4 = useRef<HTMLVideoElement>(null);
+    const videoRef5 = useRef<HTMLVideoElement>(null);
 
     const leave = () => {
         navigate('/dashboard');
@@ -39,6 +44,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [videoImg, setVideoImg] = useState(video);
     const [micImg, setMicImg] = useState(mic);
     const [showModal, setShowModal] = useState(false);
+
 
     const SoundClick = () => {
         if (soundClicked) {
@@ -155,11 +161,18 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     useEffect(() => {
         const initVideo = async () => {
             try {
+                console.log("device start")
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                    // RoomClient에서 비디오 생성
+
+                    console.log(selectedVideoDevice + " video");
+                    console.log(selectedAudioDevice + " audio");
+
                     await rc.produce(RoomClient.mediaType.video, selectedVideoDevice);
+                    await rc.produce(RoomClient.mediaType.audio, selectedAudioDevice);
+
+
+                    videoRef.current.srcObject = stream;
                 }
             } catch (error) {
                 console.error('Error accessing local media:', error);
@@ -167,7 +180,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         };
 
         initVideo();
-    }, [selectedVideoDevice]);
+    }, []);
     useEffect(() => {
         // 오디오 음소거 처리
         const toggleAudio = () => {
@@ -261,7 +274,69 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         };
     }, [videoClicked]);
 
+    useEffect(() => {
+        const observer = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' && remoteVideoEls[0] && videoRef1.current) {
+                    videoRef1.current.srcObject = remoteVideoEls[0].srcObject;
+                    observer.disconnect(); // 연결된 후 옵저버 해제
+                }
+            }
+        });
 
+        // remoteVideoEls 배열을 감시
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
+        // Clean up
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+    useEffect(() => {
+        const observer1 = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' && remoteVideoEls[1] && videoRef2.current) {
+                    videoRef2.current.srcObject = remoteVideoEls[1].srcObject;
+                    observer1.disconnect(); // 연결된 후 옵저버 해제
+                }
+            }
+        });
+
+        // remoteVideoEls 배열을 감시
+        observer1.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
+        // Clean up
+        return () => {
+            observer1.disconnect();
+        };
+    }, []);
+    useEffect(() => {
+        const observer2 = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' && remoteVideoEls[2] && videoRef3.current) {
+                    videoRef3.current.srcObject = remoteVideoEls[2].srcObject;
+                    observer2.disconnect(); // 연결된 후 옵저버 해제
+                }
+            }
+        });
+
+        // remoteVideoEls 배열을 감시
+        observer2.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
+        // Clean up
+        return () => {
+            observer2.disconnect();
+        };
+    }, []);
     return (
         <div>
             <div className="lineTop">
@@ -280,9 +355,9 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                     <BorderLinearProgress variant="determinate" value={progress}></BorderLinearProgress>
                 </Box>
                 <div className="timerText" >
-                <Typography variant="h5" gutterBottom>
-                    {timeLeft}
-                </Typography>
+                    <Typography variant="h5" gutterBottom>
+                        {timeLeft}
+                    </Typography>
                 </div>
             </div>
             <div className="AteamArea">
@@ -320,7 +395,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                     </Menu>
                 </div>
                 <div className="A2">
-                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <video className="Cam" ref={videoRef1} autoPlay width="526px" height="332px" ></video>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -353,7 +428,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                     </Menu>
                 </div>
                 <div className="A3">
-                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <video className="Cam" ref={videoRef2} autoPlay width="526px" height="332px" ></video>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -388,7 +463,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             </div>
             <div className="BteamArea">
                 <div className="B1">
-                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default}/>
+                    <video className="Cam" ref={videoRef3} autoPlay width="526px" height="332px" ></video>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -507,9 +582,9 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                     </button>
                 </div>
                 <div className="debateBtn">
-                <button className={DebateClicked ? "RoomDebateClick":"RoomDebateSet"} onClick={DebateClick}>
-                    <text className="debateText" >{DebateText}</text>
-                </button>
+                    <button className={DebateClicked ? "RoomDebateClick":"RoomDebateSet"} onClick={DebateClick}>
+                        <text className="debateText" >{DebateText}</text>
+                    </button>
                     {showModal && (
                         <DebateFin onClose={handleCloseModal} onButtonClick={onDebateCreate} />
                     )}

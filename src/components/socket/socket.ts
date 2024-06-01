@@ -1,9 +1,5 @@
-// combinedCode.ts 파일에 붙여넣기
-
 import { Socket } from 'socket.io-client';
-import React, { useRef, useState } from 'react';
 import RoomClient from "./RoomClient";
-import { types } from 'mediasoup-client';
 
 interface SocketData {
     error?: string;
@@ -38,12 +34,13 @@ export function start() {
     rc.start();
 }
 
-export function joinRoom(name: string, room_id: string, audioSelect: string, videoSelect: string, localMediaEl: HTMLVideoElement,
+export function joinRoom(name: string, room_id: string, audioSelect: HTMLOptionElement, videoSelect: HTMLOptionElement, localMediaEl: HTMLVideoElement,
                          remoteVideoEl: HTMLVideoElement,
-                         remoteAudioEl: HTMLVideoElement,
+                         remoteAudioEl: HTMLAudioElement,
                          mediasoupClientInstance: any,
                          socketUrl: string,
                          successCallback: () => void) {
+
     if (rc && rc.isOpen()) {
         console.log('Already connected to a room');
     } else {
@@ -52,7 +49,7 @@ export function joinRoom(name: string, room_id: string, audioSelect: string, vid
     }
 }
 
-export function initEnumerateDevices(audioSelect: string, videoSelect: string) {
+export function initEnumerateDevices(audioSelect: HTMLOptionElement, videoSelect: HTMLOptionElement) {
     // Many browsers, without the consent of getUserMedia, cannot enumerate the devices.
     if (isEnumerateDevices) return;
 
@@ -68,19 +65,21 @@ export function initEnumerateDevices(audioSelect: string, videoSelect: string) {
             stream.getTracks().forEach(function (track: MediaStreamTrack) {
                 track.stop();
             });
+            console.log("initinitinit")
         })
         .catch((err: any) => {
             console.error('Access denied for audio/video: ', err);
         });
 }
 
-export function enumerateDevices(audioSelect: string, videoSelect: string) {
+export function enumerateDevices(audioSelect: HTMLOptionElement, videoSelect: HTMLOptionElement) {
     // Load mediaDevice options
     navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) =>
         devices.forEach((device) => {
             let el = null;
             if ('audioinput' === device.kind) {
                 el = audioSelect;
+                console.log(audioSelect)
             } else if ('videoinput' === device.kind) {
                 el = videoSelect;
             }
@@ -89,7 +88,7 @@ export function enumerateDevices(audioSelect: string, videoSelect: string) {
             let option = document.createElement('option');
             option.value = device.deviceId || '';
             option.innerText = device.label || '';
-            // @ts-ignore
+
             el.appendChild(option);
             isEnumerateDevices = true;
         })

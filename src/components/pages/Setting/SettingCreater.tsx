@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import "./SettingCreater.css"
-import speaker from "../../image/speaker.svg"
-import speakerMute from "../../image/speakermute.svg"
-import video from "../../image/video.svg"
-import videMute from "../../image/videomute.svg"
-import mic from "../../image/mic.svg"
-import micMute from "../../image/micmute.svg"
-import RoomClient from "../../socket/RoomClient"
-import {joinRoom} from "../../socket/socket"
+import React, {useEffect, useRef, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import "./SettingCreater.css";
+import speaker from "../../image/speaker.svg";
+import speakerMute from "../../image/speakermute.svg";
+import video from "../../image/video.svg";
+import videMute from "../../image/videomute.svg";
+import mic from "../../image/mic.svg";
+import micMute from "../../image/micmute.svg";
+import RoomClient from "../../socket/RoomClient";
+import {joinRoom, rc} from "../../socket/socket";
 
 interface SettingCreaterProps {
     name: string;
-    localMediaEl: HTMLVideoElement ;
-    remoteVideoEl: HTMLVideoElement ;
-    remoteAudioEl: HTMLVideoElement ;
+    localMediaEl: HTMLVideoElement;
+    remoteVideoEl: HTMLVideoElement;
+    remoteAudioEl: HTMLAudioElement;
     mediasoupClient: any;
     socket: any;
     room_id: string;
@@ -22,14 +22,13 @@ interface SettingCreaterProps {
     onSubmit: (name: string) => void;
 }
 
-
 const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                                                            successCallback,
                                                            room_id,
                                                            localMediaEl,
                                                            remoteVideoEl,
                                                            remoteAudioEl,
-                                                           mediasoupClient}) => {
+                                                           mediasoupClient }) => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [soundClicked, setSoundClicked] = useState(false);
@@ -41,13 +40,9 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
     const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
     const [micDevices, setMicDevices] = useState<MediaDeviceInfo[]>([]);
-    const [selectedMicDevice, setSelectedMicDevice] = useState<string>('');
-    const [selectedAudioDevice, setSelectedAudioDevice] = useState<string>('');
-    const [selectedVideoDevice, setSelectedVideoDevice] = useState<string>('');
-    const [roomId, setRoomId] = useState('');
-    const [response, setResponse] = useState('');
-    const [token, setToken] = useState<string | null>(null);
-
+    const selectedMicDeviceRef = useRef<HTMLOptionElement | null>(null);
+    const selectedAudioDeviceRef = useRef<HTMLOptionElement | null>(null);
+    const selectedVideoDeviceRef = useRef<HTMLOptionElement | null>(null);
 
     useEffect(() => {
         const getLocalMedia = async () => {
@@ -61,8 +56,27 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                 console.error('Error accessing local media:', error);
             }
         };
+
+        const getRemoteMedia = async () => {
+            try {
+
+                const remoteStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                if (remoteVideoEl) {
+
+                    remoteVideoEl.srcObject = remoteStream;
+                }
+                if (remoteAudioEl) {
+
+                    remoteAudioEl.srcObject = remoteStream;
+                }
+            } catch (error) {
+                console.error('Error accessing remote media:', error);
+            }
+        };
+
         getLocalMedia();
-    }, [localMediaEl]);
+        getRemoteMedia();
+    }, [localMediaEl, remoteVideoEl, remoteAudioEl]);
 
     useEffect(() => {
         // 컴포넌트가 마운트될 때 실행
@@ -95,20 +109,25 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
         };
         requestMicPermission();
     }, []);
+
     const handleMicChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedMicDevice(event.target.value);
-        // 선택된 마이크 디바이스와 연결하는 작업 추가
+        const selectedOption = event.target.selectedOptions[0];
+        selectedMicDeviceRef.current = selectedOption;
+        console.log(selectedOption);
     };
 
     const handleAudioChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedAudioDevice(event.target.value);
-        // 선택된 오디오 디바이스와 연결하는 작업 추가
+        const selectedOption = event.target.selectedOptions[0];
+        selectedAudioDeviceRef.current = selectedOption;
+        console.log(selectedOption);
     };
 
     const handleVideoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedVideoDevice(event.target.value);
-        // 선택된 비디오 디바이스와 연결하는 작업 추가
+        const selectedOption = event.target.selectedOptions[0];
+        selectedVideoDeviceRef.current = selectedOption;
+        console.log(selectedOption);
     };
+
     const SoundClick = () => {
         if (soundClicked) {
             setSoundImg(speaker);
@@ -118,6 +137,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
             setSoundClicked(true); // true일 땐 변경될 이미지 src
         }
     };
+
     const videoClick = () => {
         if (videoClicked) {
             setVideoImg(video);
@@ -127,6 +147,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
             setVideoClicked(true); // true일 땐 변경될 이미지 src
         }
     };
+
     const micClick = () => {
         if (micClicked) {
             setMicImg(mic);
@@ -138,22 +159,25 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     };
 
     const onClickCreate = async () => {
-
-
         navigate('/debateRoom', {
             state: {
                 name,
-                selectedMicDevice,
-                selectedAudioDevice,
-                selectedVideoDevice
+                selectedMicDevice: selectedMicDeviceRef.current?.value,
+                selectedAudioDevice: selectedAudioDeviceRef.current?.value,
+                selectedVideoDevice: selectedVideoDeviceRef.current?.value,
+
             }
         });
+        console.log(selectedAudioDeviceRef.current);
+        console.log(selectedVideoDeviceRef.current);
+        if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
+            console.log(remoteVideoEl+"remotevideo확인")
+            joinRoom(name, "frontend", selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", successCallback);
 
-        joinRoom(name,"frontend",selectedAudioDevice,selectedVideoDevice,localMediaEl,remoteVideoEl,remoteAudioEl,mediasoupClient,"http://localhost:3001",successCallback)
+        }
 
         console.log(name);
     };
-
 
     useEffect(() => {
         // 오디오 음소거 처리
@@ -206,7 +230,9 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
             <div className="top">
 
             <div className="cam">
-                <video className="privateCam" ref={(el) => { if (el) localMediaEl = el; }} autoPlay muted></video>
+                <video className="privateCam" ref={(el) => { if (el) localMediaEl = el; }} autoPlay></video>
+                <video ref={(el) => { if (el) remoteVideoEl = el; }} style={{ display: 'none' }} autoPlay />
+                <audio ref={(el) => { if (el) remoteAudioEl = el; }} style={{ display: 'none' }} autoPlay />
             </div>
             <div className="otherButton">
                 <button className={soundClicked ?"soundClick" : "SoundSet"} onClick={SoundClick}>
@@ -220,20 +246,20 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                 </button>
             </div>
             <div className="setSelect">
-                <select name="soundChoice" className="soundChoice" onChange={handleAudioChange} value={selectedAudioDevice} >
-                    <option disabled selected>헤드셋 설정</option>
+                <select name="soundChoice" className="soundChoice" defaultValue="" onChange={handleAudioChange}>
+                    <option value="" disabled>헤드셋 설정</option>
                     {audioDevices.map(device => (
                         <option key={device.deviceId} value={device.deviceId}>{device.label || device.deviceId}</option>
                     ))}
                 </select>
-                <select name="videoChoice" className="videoChoice" onChange={handleVideoChange} value={selectedVideoDevice}>
-                    <option disabled selected>비디오 설정</option>
+                <select name="videoChoice" className="videoChoice" defaultValue="" onChange={handleVideoChange}>
+                    <option value="" disabled>비디오 설정</option>
                     {videoDevices.map(device => (
                         <option key={device.deviceId} value={device.deviceId}>{device.label || device.deviceId}</option>
                     ))}
                 </select>
-                <select name="micChoice" className="micChoice" onChange={handleMicChange} value={selectedMicDevice} >
-                    <option disabled selected>마이크 설정</option>
+                <select name="micChoice" className="micChoice" defaultValue="" onChange={handleMicChange}>
+                    <option value="" disabled>마이크 설정</option>
                     {micDevices.map(device => (
                         <option key={device.deviceId} value={device.deviceId}>{device.label || device.deviceId}</option>
                     ))}
