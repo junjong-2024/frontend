@@ -18,7 +18,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8080/login', {
+            const response = await fetch('https://junjong2024.asuscomm.com:443/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
             navigate('/dashboard');
         } catch (error) {
             console.error('Error:', error);
-            alert('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+            alert('올바르지 않은 아이디와 비밀번호 입니다.');
         }
     };
 

@@ -337,6 +337,48 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             observer2.disconnect();
         };
     }, []);
+    useEffect(() => {
+        const observer3 = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' && remoteVideoEls[3] && videoRef4.current) {
+                    videoRef4.current.srcObject = remoteVideoEls[3].srcObject;
+                    observer3.disconnect(); // 연결된 후 옵저버 해제
+                }
+            }
+        });
+
+        // remoteVideoEls 배열을 감시
+        observer3.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
+        // Clean up
+        return () => {
+            observer3.disconnect();
+        };
+    }, []);
+    useEffect(() => {
+        const observer4 = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' && remoteVideoEls[4] && videoRef5.current) {
+                    videoRef5.current.srcObject = remoteVideoEls[4].srcObject;
+                    observer4.disconnect(); // 연결된 후 옵저버 해제
+                }
+            }
+        });
+
+        // remoteVideoEls 배열을 감시
+        observer4.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
+        // Clean up
+        return () => {
+            observer4.disconnect();
+        };
+    }, []);
     return (
         <div>
             <div className="lineTop">
@@ -396,6 +438,8 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 </div>
                 <div className="A2">
                     <video className="Cam" ref={videoRef1} autoPlay width="526px" height="332px" ></video>
+                    {remoteVideoEls[0] ? (
+                            <>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -426,8 +470,12 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                             </MenuItem>
                         ))}
                     </Menu>
+                            </>
+                    ) : null}
                 </div>
                 <div className="A3">
+                    {remoteVideoEls[1] ? (
+                        <>
                     <video className="Cam" ref={videoRef2} autoPlay width="526px" height="332px" ></video>
                     <IconButton
                         aria-label="more"
@@ -459,11 +507,15 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                             </MenuItem>
                         ))}
                     </Menu>
+                        </>
+                    ) : null}
                 </div>
             </div>
             <div className="BteamArea">
                 <div className="B1">
                     <video className="Cam" ref={videoRef3} autoPlay width="526px" height="332px" ></video>
+                    {remoteVideoEls[2] ? (
+                            <>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -494,9 +546,13 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                             </MenuItem>
                         ))}
                     </Menu>
+                            </>
+                    ) : null}
                 </div>
                 <div className="B2">
-                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <video className="Cam" ref={videoRef4} autoPlay width="526px" height="332px" ></video>
+                    {remoteVideoEls[3] ? (
+                            <>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -527,9 +583,13 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                             </MenuItem>
                         ))}
                     </Menu>
+                            </>
+                    ) : null}
                 </div>
                 <div className="B3">
-                    <img className="Cam" src={require("../../image/Rectangle 48.svg").default} />
+                    <video className="Cam" ref={videoRef5} autoPlay width="526px" height="332px" ></video>
+                    {remoteVideoEls[4] ? (
+                        <>
                     <IconButton
                         aria-label="more"
                         id="long-button"
@@ -560,6 +620,8 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                             </MenuItem>
                         ))}
                     </Menu>
+                        </>
+                    ) : null}
                 </div>
             </div>
             <div className="btnAndCode">

@@ -23,7 +23,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onSubmit }) => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/user/register', {
+            const response = await fetch('https://junjong2024.asuscomm.com:443/api/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

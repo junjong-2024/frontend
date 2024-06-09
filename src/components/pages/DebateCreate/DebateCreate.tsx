@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Dialog, DialogContent, DialogTitle,} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import "./DebateCreate.css";
+import axios from "axios";
 
 interface ModalProps {
     onClose: () => void;
@@ -12,18 +13,57 @@ interface ModalProps {
 
 
 const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDebateContent}) => {
-    const [debateName, setDebateName] = useState('');
+    const [name, setName] = useState('');
     const [debateContent, setDebateContent] = useState('');
+    const [rule_id, setRule_id] = useState('');
     const navigate = useNavigate();
 
     const NameSet = () => {
-        onDebateName(debateName);
+        onDebateName(name);
     }
     const ContentSet = () => {
-        onDebateContent(debateName);
+        onDebateContent(name);
     }
-    const create = () => {
-        navigate('/SettingCreater');
+    const create = async () => {
+        const Token = localStorage.getItem('token'); // 로컬에 저장된 토큰 가져오기
+        if (!Token) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
+        try {
+            const response = await axios.post('https://junjong2024.asuscomm.com:443/api/room', {
+                name,
+                rule_id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${Token}`
+                }
+            });
+
+            if (response.status === 200) {
+                const { id, name, created_at, user_id, video_src, thumbnail_src, script, rule_id } = response.data;
+
+                console.log('Debate Created:', {
+                    id,
+                    name,
+                    created_at,
+                    user_id,
+                    video_src,
+                    thumbnail_src,
+                    script,
+                    rule_id
+                });
+
+                // 성공적으로 생성되면 다음 페이지로 이동
+                navigate('/SettingCreater');
+            } else {
+                alert('토론 생성에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Error creating debate:', error);
+            alert('토론 생성 중 오류가 발생했습니다.');
+        }
     };
 
     return (
@@ -38,8 +78,8 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                             className="nameInput"
                             type="text"
                             id="debateName"
-                            value={debateName}
-                            onChange={(e) => setDebateName(e.target.value)}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                         />
                     </div>
@@ -57,9 +97,15 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                     </div>
                 </form>
                 <div className="ruleSelect">
-                    <text className="debateRule">토론 규칙 선택</text>
-                    <select name="debate" className="debateRuleBox">
-                        <option disabled selected>토론 규칙</option>
+                    <label className="debateRule">토론 규칙 선택</label>
+                    <select
+                        name="debate"
+                        className="debateRuleBox"
+                        value={rule_id}
+                        onChange={(e) => setRule_id(e.target.value)}
+                        required
+                    >
+                        <option value="" disabled>토론 규칙</option>
                         <option value="rule1">기본 규칙1</option>
                         <option value="rule2">기본 규칙2</option>
                         <option value="rule3">기본 규칙3</option>
