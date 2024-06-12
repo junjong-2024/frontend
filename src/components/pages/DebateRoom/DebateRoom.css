@@ -171,6 +171,9 @@
     margin-right: 30px;
     margin-left: auto;
 }
+.hidden {
+    display: none;
+}
 .RoomDebateClick{
     font-size: 30px;
     font-weight: bold;

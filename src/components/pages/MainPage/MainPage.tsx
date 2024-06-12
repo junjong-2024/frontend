@@ -11,7 +11,7 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) => {
     const [login_id, setLogin_id] = useState('');
     const [password, setPassword] = useState('');
-    const [joinCode, setJoinCode] = useState('');
+    const [id, setId] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,8 +44,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
     };
 
     const handleJoin = () => {
-        onJoin(joinCode);
-        navigate('/SettingMember');
+        onJoin(id);
+        navigate('/SettingMember',{
+            state: {
+                id
+            }
+        });
     };
 
     const handleRegister = () => {
@@ -103,8 +107,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
                             className="joinInput"
                             type="text"
                             id="joinCode"
-                            value={joinCode}
-                            onChange={(e) => setJoinCode(e.target.value)}
+                            value={id}
+                            onChange={(e) => setId(e.target.value)}
                             required
                         />
                     </div>

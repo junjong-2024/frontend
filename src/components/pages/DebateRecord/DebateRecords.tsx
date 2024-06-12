@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
 import Modal from "../DebateCreate/DebateCreate";
 import "./DebateRecord.css"
 
@@ -13,6 +13,20 @@ interface DebateRecordProps {
 const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+
+    const [recordData, setRecordData] = useState({
+        thumbnail_src: '',
+        name: '',
+        created_at: '',
+        script: '',
+        rule_id: ''
+    });
+    const location = useLocation();
+    useEffect(() => {
+        if (location.state) {
+            setRecordData(location.state as any);
+        }
+    }, [location.state]);
 
     const handleDebateCreate = () => {
         setShowModal(true);
@@ -46,6 +60,21 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
         navigate('/LoginPage');
     };
 
+    const formatScript = (script: string) => {
+        const lines = script.split('\n');
+        if (lines.length > 3) {
+            return `${lines.slice(0, 3).join('\n')}...`;
+        }
+        return script;
+    };
+    const handleDownloadScript = () => {
+        const element = document.createElement("a");
+        const file = new Blob([recordData.script], { type: 'text/plain' });
+        element.href = URL.createObjectURL(file);
+        element.download = `${recordData.name}_script.txt`;
+        document.body.appendChild(element);
+        element.click();
+    };
 
     return (
         <>
@@ -85,16 +114,16 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
                         </button>
                     </div>
                     <div className="recordPage">
-                    <text className="debateCheck">토론 조회</text>
-                    <text className="debateName">토론방 이름</text>
-                    <text className="debateDate">토론 날짜</text>
-                    <img className="debateCheckImg" src={"https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"}></img>
-                    <div className="recordButton">
-                        <button className="videoDownload">영상 다운로드</button>
-                        <button className="scriptDownload">스크립트 다운로드</button>
-                    </div>
-                    <text className="script">스크립트 미리보기</text>
-                    <text className="scriptContent">내용</text>
+                        <text className="debateCheck">토론 조회</text>
+                        <text className="debateName">{recordData.name}</text>
+                        <text className="debateDate">{recordData.created_at}</text>
+                        <img className="debateCheckImg" src={recordData.thumbnail_src} alt="토론 이미지" />
+                        <div className="recordButton">
+                            <button className="videoDownload">영상 다운로드</button>
+                            <button className="scriptDownload" onClick={handleDownloadScript}>스크립트 다운로드</button>
+                        </div>
+                        <text className="script">스크립트 미리보기</text>
+                        <text className="scriptContent">{formatScript(recordData.script)}</text>
                     </div>
                 </div>
 

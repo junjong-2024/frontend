@@ -24,7 +24,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [timeLeft, setTimeLeft] = useState('3:00');
     const navigate = useNavigate();
     const location = useLocation();
-    const { selectedMicDevice, selectedAudioDevice, selectedVideoDevice } = location.state;
+    const { id,selectedMicDevice, selectedAudioDevice, selectedVideoDevice } = location.state;
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoRef1 = useRef<HTMLVideoElement>(null);
     const videoRef2 = useRef<HTMLVideoElement>(null);
@@ -33,7 +33,13 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const videoRef5 = useRef<HTMLVideoElement>(null);
 
     const leave = () => {
-        navigate('/dashboard');
+        const token = localStorage.getItem('token');
+        rc.exit();
+        if (token) {
+            navigate('/dashboard');
+        } else {
+            navigate('/loginpage');
+        }
     };
     const [soundClicked, setSoundClicked] = useState(false);
     const [videoClicked, setVideoClicked] = useState(false);
@@ -294,7 +300,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         return () => {
             observer.disconnect();
         };
-    }, []);
+    }, [remoteVideoEls]);
     useEffect(() => {
         const observer1 = new MutationObserver((mutationsList) => {
             for (let mutation of mutationsList) {
@@ -626,8 +632,8 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             </div>
             <div className="btnAndCode">
                 <div className="InviteCode">
-                    <text className="invite">토론방 참여 코드</text>
-                    <text className="code">abc-def-ghi</text>
+                    <span className="invite">토론방 참여 코드</span>
+                    <span className="code" onClick={() => {navigator.clipboard.writeText(id); alert("회의 번호가 복사되었습니다!");}}>{id}</span>
                 </div>
                 <div className="btnList">
                     <button className={soundClicked ?"RoomSoundClick" : "RoomSoundSet"} onClick={SoundClick}>
@@ -643,7 +649,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                         <img className="leave" src={require("../../image/logout 2.svg").default}/>
                     </button>
                 </div>
-                <div className="debateBtn">
+                <div className={`debateBtn ${localStorage.getItem('token') ? '' : 'hidden'}`}>
                     <button className={DebateClicked ? "RoomDebateClick":"RoomDebateSet"} onClick={DebateClick}>
                         <text className="debateText" >{DebateText}</text>
                     </button>

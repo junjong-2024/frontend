@@ -85,7 +85,9 @@ const Volume: React.FC<VolumeProps> = ({onLogout, onDebateCreate, onDebateName,o
                             <text className="Button_text">로그아웃</text>
                         </button>
                     </div>
-                    <text className="dash">용량 정보</text>
+                    <div className="volumePage">
+                        <text className="dash">용량 정보</text>
+                    </div>
                 </div>
 
             </div>

@@ -85,7 +85,9 @@ const DebateRule: React.FC<DebateRuleProps> = ({ onDebateCreate, onDebateName,on
                             <text className="Button_text">로그아웃</text>
                         </button>
                     </div>
-                    <text className="dash">토론 규칙</text>
+                    <div className="rulePage">
+                        <text className="rule">토론 규칙</text>
+                    </div>
                 </div>
 
             </div>

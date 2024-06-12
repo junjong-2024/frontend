@@ -14,7 +14,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDebateContent}) => {
     const [name, setName] = useState('');
-    const [debateContent, setDebateContent] = useState('');
+    const [description, setDescription] = useState('');
     const [rule_id, setRule_id] = useState('');
     const navigate = useNavigate();
 
@@ -22,16 +22,9 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
         onDebateName(name);
     }
     const ContentSet = () => {
-        onDebateContent(name);
+        onDebateContent(description);
     }
-    const RoomCreate = (keyword:string,keyword2:string) => {
-        const token = localStorage.getItem('token');
-        return axios.create({
-            baseURL: "https://junjong2024.asuscomm.com:443/api/room",
-            headers: { Authorization: token },
-            params: { query: keyword,keyword2 }
-        });
-    }
+
     const create = async () => {
         const token = localStorage.getItem('token'); // 로컬에 저장된 토큰 가져오기
         console.log(token);
@@ -49,7 +42,8 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                 },
                 body: JSON.stringify({
                     name,
-                    rule_id
+                    rule_id,
+                    description
                 })
             });
 
@@ -68,8 +62,8 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                     rule_id
                 });
 
-                // 성공적으로 생성되면 다음 페이지로 이동
-                navigate('/SettingCreater');
+                // 성공적으로 생성되면 다음 페이지로 이동, id를 함께 전달
+                navigate('/SettingCreater', { state: { id } });
             } else {
                 alert('토론 생성에 실패했습니다.');
             }
@@ -78,6 +72,7 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
             alert('토론 생성 중 오류가 발생했습니다.');
         }
     };
+
 
     return (
         <Dialog className="popup" open={true} onClose={onClose}>
@@ -103,8 +98,8 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                         <textarea
                             className="ContentInput"
                             id="debateContent"
-                            value={debateContent}
-                            onChange={(e) => setDebateContent(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             required
                         />
                     </div>

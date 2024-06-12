@@ -48,6 +48,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                 }));
 
                 setDebateRecords(records);
+                console.log(records)
             } catch (error) {
                 console.error('Error fetching data:', error);
                 alert('데이터를 가져오는 중 오류가 발생했습니다.');
@@ -66,9 +67,18 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
         setShowModal(false);
     };
 
-    const handleOpenDebateRecord = () => {
-        navigate('/debateRecord');
+    const handleOpenDebateRecord = (record: DebateRecord) => {
+        navigate('/debateRecord', {
+            state: {
+                thumbnail_src: record.thumbnail_src,
+                name: record.name,
+                created_at: record.created_at,
+                script: record.script,
+                rule_id: record.rule_id,
+            }
+        });
     };
+
 
     const handleDashboard = () => {
         navigate('/dashboard');
@@ -106,7 +116,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                     <img className="line" src={require("../../image/Rectangle 32.svg").default} alt="선 "/>
 
             </div>
-            <div>
+
                 <div className="page">
                     <div className="buttonList">
                         <button className="dashboardButton" onClick={handleDashboard}>
@@ -132,7 +142,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                     <div className="pagebutton">
                         <text className="dash">대시 보드</text>
                         {debateRecords.map((record, index) => (
-                            <button key={index} className="debateRecord" onClick={handleOpenDebateRecord}>
+                            <button key={index} className="debateRecord" onClick={() => handleOpenDebateRecord(record)}>
                                 <img className="debateImg" src={record.thumbnail_src} alt="토론 이미지"/>
                                 <text className="debateTitle">{record.name}</text>
                             </button>
@@ -140,7 +150,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                     </div>
                 </div>
 
-            </div>
+
         </>
     );
 };

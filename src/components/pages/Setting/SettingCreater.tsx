@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import "./SettingCreater.css";
 import speaker from "../../image/speaker.svg";
 import speakerMute from "../../image/speakermute.svg";
@@ -43,6 +43,8 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     const selectedMicDeviceRef = useRef<HTMLOptionElement | null>(null);
     const selectedAudioDeviceRef = useRef<HTMLOptionElement | null>(null);
     const selectedVideoDeviceRef = useRef<HTMLOptionElement | null>(null);
+    const location = useLocation();
+    const { id } = location.state || {};
 
     useEffect(() => {
         const getLocalMedia = async () => {
@@ -161,6 +163,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     const onClickCreate = async () => {
         navigate('/debateRoom', {
             state: {
+                id,
                 name,
                 selectedMicDevice: selectedMicDeviceRef.current?.value,
                 selectedAudioDevice: selectedAudioDeviceRef.current?.value,
@@ -172,7 +175,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
         console.log(selectedVideoDeviceRef.current);
         if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
             console.log(remoteVideoEl+"remotevideo확인")
-            joinRoom(name, "frontend", selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", successCallback);
+            joinRoom(name, id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", successCallback);
 
         }
 

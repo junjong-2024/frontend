@@ -138,6 +138,8 @@
     color: white;
 }
 .recordPage{
+    margin-top: 110px;
+    margin-left: 424px;
     display: inline-block;
     width: 70%;
 }

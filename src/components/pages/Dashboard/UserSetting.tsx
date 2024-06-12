@@ -85,7 +85,9 @@ const UserSetting: React.FC<UserSettingProps> = ({onLogout, onDebateCreate, onDe
                             <text className="Button_text">로그아웃</text>
                         </button>
                     </div>
-                    <text className="dash">사용자 설정</text>
+                    <div className="settingPage">
+                        <text className="dash">사용자 설정</text>
+                    </div>
                 </div>
 
             </div>

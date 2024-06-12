@@ -85,7 +85,9 @@ const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName
                             <text className="Button_text">로그아웃</text>
                         </button>
                     </div>
-                    <text className="dash">결제 정보</text>
+                    <div className="paymentPage">
+                        <text className="dash">결제 정보</text>
+                    </div>
                 </div>
 
             </div>
