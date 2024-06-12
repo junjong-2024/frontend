@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import Modal from '../DebateCreate/DebateCreate';
 import "./Dashboard.css";
+import axios from "axios";
 
 interface DashboardProps {
     onLogout: () => void;
@@ -10,10 +11,51 @@ interface DashboardProps {
     onDebateName: () => void;
     onDebateContent: () => void;
 }
-
+interface DebateRecord {
+    id: number;
+    name: string;
+    created_at: string;
+    user_id: number;
+    video_src: string;
+    thumbnail_src: string;
+    script: string;
+    rule_id: string;
+}
 const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDebateRecord, onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
+    const [debateRecords, setDebateRecords] = useState<DebateRecord[]>([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                navigate('/LoginPage');
+                return;
+            }
+
+            try {
+                const response = await axios.get('https://junjong2024.asuscomm.com/api/room/list', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const records = response.data.map((record: any) => ({
+                    ...record,
+                    thumbnail_src: `https://junjong2024.asuscomm.com/${record.thumbnail_src}`
+                }));
+
+                setDebateRecords(records);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('데이터를 가져오는 중 오류가 발생했습니다.');
+            }
+        };
+
+        fetchData();
+    }, [navigate]);
 
     const handleDebateCreate = () => {
         setShowModal(true);
@@ -44,6 +86,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
         navigate('/Volume');
     };
     const handleLogout = () => {
+        localStorage.removeItem('token');
         navigate('/LoginPage');
     };
 
@@ -88,10 +131,12 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
 
                     <div className="pagebutton">
                         <text className="dash">대시 보드</text>
-                        <button className="debateRecord" onClick={handleOpenDebateRecord}>
-                            <img className="debateImg" src={"https://www.shutterstock.com/image-vector/no-image-available-icon-template-600nw-1036735678.jpg"}/>
-                            <text className="debateTitle">토론 제목</text>
-                        </button>
+                        {debateRecords.map((record, index) => (
+                            <button key={index} className="debateRecord" onClick={handleOpenDebateRecord}>
+                                <img className="debateImg" src={record.thumbnail_src} alt="토론 이미지"/>
+                                <text className="debateTitle">{record.name}</text>
+                            </button>
+                        ))}
                     </div>
                 </div>
 

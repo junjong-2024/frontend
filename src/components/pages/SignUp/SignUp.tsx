@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./SignUp.css"
+import axios from "axios";
 
 interface SignUpFormProps {
     onSubmit: (name: string, login_id: string, password: string, user_email: string, phone: string) => void;
@@ -23,25 +24,18 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onSubmit }) => {
         }
 
         try {
-            const response = await fetch('https://junjong2024.asuscomm.com:443/api/user/register', {
-                method: 'POST',
+            const response = await axios.post('https://junjong2024.asuscomm.com/api/user/register', {
+                name,
+                login_id,
+                password,
+                user_email,
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name,
-                    login_id,
-                    password,
-                    user_email,
-                }),
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log('Success:', data);
+            console.log('Success:', response.data);
 
             onSubmit(name, login_id, password, user_email, confirmPassword);
             navigate('/LoginPage'); // /LoginPage 페이지로 이동

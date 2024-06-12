@@ -24,25 +24,38 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
     const ContentSet = () => {
         onDebateContent(name);
     }
+    const RoomCreate = (keyword:string,keyword2:string) => {
+        const token = localStorage.getItem('token');
+        return axios.create({
+            baseURL: "https://junjong2024.asuscomm.com:443/api/room",
+            headers: { Authorization: token },
+            params: { query: keyword,keyword2 }
+        });
+    }
     const create = async () => {
-        const Token = localStorage.getItem('token'); // 로컬에 저장된 토큰 가져오기
-        if (!Token) {
+        const token = localStorage.getItem('token'); // 로컬에 저장된 토큰 가져오기
+        console.log(token);
+        if (!token) {
             alert('로그인이 필요합니다.');
             return;
         }
 
         try {
-            const response = await axios.post('https://junjong2024.asuscomm.com:443/api/room', {
-                name,
-                rule_id
-            }, {
+            const response = await fetch('https://junjong2024.asuscomm.com:443/api/room', {
+                method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${Token}`
-                }
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name,
+                    rule_id
+                })
             });
 
-            if (response.status === 200) {
-                const { id, name, created_at, user_id, video_src, thumbnail_src, script, rule_id } = response.data;
+            if (response.ok) {
+                const data = await response.json();
+                const { id, name, created_at, user_id, video_src, thumbnail_src, script, rule_id } = data;
 
                 console.log('Debate Created:', {
                     id,
@@ -106,7 +119,7 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                         required
                     >
                         <option value="" disabled>토론 규칙</option>
-                        <option value="rule1">기본 규칙1</option>
+                        <option value="2c928086900653bc0190067056c20005">기본 규칙1</option>
                         <option value="rule2">기본 규칙2</option>
                         <option value="rule3">기본 규칙3</option>
                         <option value="rule4">기본 규칙4</option>

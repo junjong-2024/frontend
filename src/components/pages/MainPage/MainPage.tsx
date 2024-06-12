@@ -18,7 +18,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
         event.preventDefault();
 
         try {
-            const response = await fetch('https://junjong2024.asuscomm.com:443/api/user/login', {
+            const response = await fetch('https://junjong2024.asuscomm.com/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,6 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
             const data = await response.json();
             const token = data.token;
             localStorage.setItem('token', token);
+            console.log(token)
 
             onLogin(login_id, password);
             navigate('/dashboard');
