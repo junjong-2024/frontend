@@ -81,6 +81,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     };
     const DebateClick = () => {
         if (DebateClicked) {
+            rc.start();
             setShowModal(true);
         } else {
             setDebateText("토론종료");
@@ -300,7 +301,8 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         return () => {
             observer.disconnect();
         };
-    }, [remoteVideoEls]);
+    }, []);
+
     useEffect(() => {
         const observer1 = new MutationObserver((mutationsList) => {
             for (let mutation of mutationsList) {

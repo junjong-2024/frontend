@@ -553,11 +553,22 @@ class RoomClient {
     getLocalProducers() {
         return this.producers;
     }
-
     removeConsumer(consumer_id: string) {
         let elem = document.getElementById(consumer_id);
-        elem!.parentNode!.removeChild(elem!);
+
+
+        const index1 = remoteVideoEls.findIndex(el => el.id === consumer_id);
+        console.log("눈누누ㅜ누누누누누누ㅜ누누누ㅜ누누누ㅜ누누누누누ㅜ누누ㅜ누누"+index1)
+        if (index1 !== -1) {
+            remoteVideoEls.splice(index1, 1);
+        }
+
         this.consumers.delete(consumer_id);
+        remoteVideoEls.forEach((el, index) => {
+            console.log(`Element ${index + 1}:`, el);
+        });
+        console.log("눈누누ㅜ누누누누누누ㅜ누누누ㅜ누누누ㅜ누누누누누ㅜ누누ㅜ누누22222222222"+index1)
+
     }
 }
 

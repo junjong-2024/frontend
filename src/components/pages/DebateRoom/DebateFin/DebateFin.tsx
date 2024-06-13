@@ -3,6 +3,7 @@ import {Dialog, DialogContent, DialogTitle,} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import "../../DebateCreate/DebateCreate.css";
 import "./DebateFin.css"
+import {rc} from "../../../socket/socket";
 
 interface DebateFinProps {
     onClose: () => void;
@@ -15,7 +16,8 @@ const DebateFin: React.FC<DebateFinProps> = ({onClose, onButtonClick}) => {
     const navigate = useNavigate();
 
     const create = () => {
-        navigate('/SettingCreater');
+        rc.exit();
+        navigate('/dashboard');
     };
 
     return (
