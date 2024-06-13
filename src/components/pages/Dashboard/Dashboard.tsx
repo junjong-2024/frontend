@@ -75,6 +75,7 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                 created_at: record.created_at,
                 script: record.script,
                 rule_id: record.rule_id,
+                video_src: record.video_src
             }
         });
     };

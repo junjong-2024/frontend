@@ -387,6 +387,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             observer4.disconnect();
         };
     }, []);
+
     return (
         <div>
             <div className="lineTop">

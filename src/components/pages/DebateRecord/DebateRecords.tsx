@@ -19,7 +19,8 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
         name: '',
         created_at: '',
         script: '',
-        rule_id: ''
+        rule_id: '',
+        video_src: ''
     });
     const location = useLocation();
     useEffect(() => {
@@ -37,9 +38,7 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
         setShowModal(false);
     };
 
-    const handleOpenDebateRecord = () => {
-        navigate('/debateRecord');
-    };
+
 
     const handleDashboard = () => {
         navigate('/dashboard');
@@ -72,6 +71,13 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
         const file = new Blob([recordData.script], { type: 'text/plain' });
         element.href = URL.createObjectURL(file);
         element.download = `${recordData.name}_script.txt`;
+        document.body.appendChild(element);
+        element.click();
+    };
+    const handleDownloadVideo = () => {
+        const element = document.createElement('a');
+        element.href = recordData.video_src; // Assuming video_src is a valid URL
+        element.download = `${recordData.name}_video.mp4`;
         document.body.appendChild(element);
         element.click();
     };
@@ -119,7 +125,7 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
                         <text className="debateDate">{recordData.created_at}</text>
                         <img className="debateCheckImg" src={recordData.thumbnail_src} alt="토론 이미지" />
                         <div className="recordButton">
-                            <button className="videoDownload">영상 다운로드</button>
+                            <button className="videoDownload" onClick={handleDownloadVideo}>영상 다운로드</button>
                             <button className="scriptDownload" onClick={handleDownloadScript}>스크립트 다운로드</button>
                         </div>
                         <text className="script">스크립트 미리보기</text>
