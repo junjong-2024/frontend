@@ -91,7 +91,6 @@ const App: React.FC = () => {
                                                                        remoteVideoEl={remoteVideoEl}
                                                                        remoteAudioEl={remoteAudioEl}
                                                                        mediasoupClient={mediasoupClientInstance}
-                                                                       room_id={room_id}
                                                                        socket={socket}
                                                                        successCallback={join}/>}/>
                 <Route path="/SettingMember" element={<SettingMember onSubmit={signup}
@@ -100,7 +99,6 @@ const App: React.FC = () => {
                                                                      remoteVideoEl={remoteVideoEl}
                                                                      remoteAudioEl={remoteAudioEl}
                                                                      mediasoupClient={mediasoupClientInstance}
-                                                                     room_id={room_id}
                                                                      socket={socket}
                                                                      successCallback={join}/>}/>
                 <Route path="/test" element={<Tests />}/>

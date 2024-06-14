@@ -70,14 +70,15 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    name,
                     rule_id,
+                    name,
                     description
                 })
             });
 
             if (response.ok) {
                 const data = await response.json();
+                console.log("test좀 해보자")
                 const { room_id } = data;
 
                 console.log('Debate Created:', {
