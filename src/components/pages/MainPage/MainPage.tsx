@@ -25,7 +25,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
                 },
                 body: JSON.stringify({ login_id, password }),
             });
-
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             console.log(response.ok)
 
             const data = await response.json();

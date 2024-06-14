@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dialog, DialogContent, DialogTitle,} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import "./DebateCreate.css";
@@ -10,13 +10,17 @@ interface ModalProps {
     onButtonClick: () => void;
     onDebateContent: (debateContent: string) => void;
 }
-
+interface Rule {
+    id: number;
+    rule_name: string;
+}
 
 const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDebateContent}) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [rule_id, setRule_id] = useState('');
     const navigate = useNavigate();
+    const [rules, setRules] = useState<Rule[]>([]);
 
     const NameSet = () => {
         onDebateName(name);
@@ -24,7 +28,32 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
     const ContentSet = () => {
         onDebateContent(description);
     }
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token'); // 로컬에 저장된 토큰 가져오기
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
 
+            try {
+                const response = await axios.get('https://junjong2024.asuscomm.com/api/rule/list', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                console.log('Fetched data:', response.data);
+                setRules(response.data); // 응답 데이터를 상태에 저장
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                alert('데이터를 가져오는 중 오류가 발생했습니다.');
+            }
+        };
+
+        fetchData();
+    }, []);
     const create = async () => {
         const token = localStorage.getItem('token'); // 로컬에 저장된 토큰 가져오기
         console.log(token);
@@ -114,10 +143,9 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
                         required
                     >
                         <option value="" disabled>토론 규칙</option>
-                        <option value="2c928086900653bc0190067056c20005">기본 규칙1</option>
-                        <option value="rule2">기본 규칙2</option>
-                        <option value="rule3">기본 규칙3</option>
-                        <option value="rule4">기본 규칙4</option>
+                        {rules.map(rule => (
+                            <option key={rule.id} value={rule.id}>{rule.rule_name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="create">
