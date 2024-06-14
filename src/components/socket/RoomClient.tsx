@@ -102,9 +102,7 @@ class RoomClient {
 
     ////////// INIT /////////
 
-    async start() {
-        let room_id = this.room_id;
-        let name = this.name;
+    async start(name:string,room_id:string) {
         await this.socket.request('start', { room_id, name }).catch((err: any) => {
             console.log('Start debate error:', err);
         });
