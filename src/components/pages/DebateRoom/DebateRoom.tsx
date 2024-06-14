@@ -24,7 +24,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [timeLeft, setTimeLeft] = useState('3:00');
     const navigate = useNavigate();
     const location = useLocation();
-    const { id,selectedMicDevice, selectedAudioDevice, selectedVideoDevice } = location.state;
+    const { room_id,selectedMicDevice, selectedAudioDevice, selectedVideoDevice } = location.state;
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoRef1 = useRef<HTMLVideoElement>(null);
     const videoRef2 = useRef<HTMLVideoElement>(null);
@@ -636,7 +636,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             <div className="btnAndCode">
                 <div className="InviteCode">
                     <span className="invite">토론방 참여 코드</span>
-                    <span className="code" onClick={() => {navigator.clipboard.writeText(id); alert("회의 번호가 복사되었습니다!");}}>{id}</span>
+                    <span className="code" onClick={() => {navigator.clipboard.writeText(room_id); alert("회의 번호가 복사되었습니다!");}}>{room_id}</span>
                 </div>
                 <div className="btnList">
                     <button className={soundClicked ?"RoomSoundClick" : "RoomSoundSet"} onClick={SoundClick}>

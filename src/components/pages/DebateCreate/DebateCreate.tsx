@@ -78,21 +78,14 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
 
             if (response.ok) {
                 const data = await response.json();
-                const { id, name, created_at, user_id, video_src, thumbnail_src, script, rule_id } = data;
+                const { room_id } = data;
 
                 console.log('Debate Created:', {
-                    id,
-                    name,
-                    created_at,
-                    user_id,
-                    video_src,
-                    thumbnail_src,
-                    script,
-                    rule_id
+                    room_id
                 });
 
                 // 성공적으로 생성되면 다음 페이지로 이동, id를 함께 전달
-                navigate('/SettingCreater', { state: { id } });
+                navigate('/SettingCreater', { state: { room_id } });
             } else {
                 alert('토론 생성에 실패했습니다.');
             }

@@ -17,14 +17,12 @@ interface SettingMemberProps {
     remoteAudioEl: HTMLAudioElement ;
     mediasoupClient: any;
     socket: any;
-    room_id: string;
     successCallback: () => void;
     onSubmit: (name: string) => void;
 }
 
 const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
                                                          successCallback,
-                                                         room_id,
                                                          localMediaEl,
                                                          remoteVideoEl,
                                                          remoteAudioEl,
@@ -44,7 +42,7 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
     const selectedAudioDeviceRef = useRef<HTMLOptionElement | null>(null);
     const selectedVideoDeviceRef = useRef<HTMLOptionElement | null>(null);
     const location = useLocation();
-    const { id } = location.state || {};
+    const { room_id } = location.state || {};
 
     useEffect(() => {
         const getLocalMedia = async () => {
@@ -164,7 +162,7 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
         navigate('/debateRoom', {
             state: {
                 name,
-                id,
+                room_id,
                 selectedMicDevice: selectedMicDeviceRef.current?.value,
                 selectedAudioDevice: selectedAudioDeviceRef.current?.value,
                 selectedVideoDevice: selectedVideoDeviceRef.current?.value
@@ -174,7 +172,7 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
         console.log(selectedVideoDeviceRef.current);
         if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
             console.log(localMediaEl+"remotevideo확인")
-            joinRoom(name, id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "http://localhost:3001", successCallback);
+            joinRoom(name, room_id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "/", successCallback);
 
         }
 
