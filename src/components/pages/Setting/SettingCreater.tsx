@@ -105,7 +105,6 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
                 console.log('오디오 및 마이크 권한이 허용되었습니다.');
                 stream.getTracks().forEach(track => track.stop());
-                window.location.reload();
             } catch (error) {
                 console.log('오디오 및 마이크 권한이 허용되었습니다.');
             }
