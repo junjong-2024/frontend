@@ -144,7 +144,10 @@ const Dashboard: React.FC<DashboardProps> = ({onLogout, onDebateCreate, onOpenDe
                         <text className="dash">대시 보드</text>
                         {debateRecords.map((record, index) => (
                             <button key={index} className="debateRecord" onClick={() => handleOpenDebateRecord(record)}>
-                                <img className="debateImg" src={record.thumbnail_src} alt="토론 이미지"/>
+                                <img className="debateImg" src={record.thumbnail_src === "https://junjong2024.asuscomm.com/null"
+                                    ? require("../../image/KakaoTalk_20240614_184828364 1.svg").default // 대체 이미지 경로
+                                    : record.thumbnail_src // 기존 이미지 경로
+                                } alt="토론 이미지"/>
                                 <text className="debateTitle">{record.name}</text>
                             </button>
                         ))}
