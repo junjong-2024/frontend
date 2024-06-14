@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({onClose, onButtonClick, onDebateName, onDe
             }
 
             try {
-                const response = await axios.get('/api/rule/list', {
+                const response = await axios.get('https://junjong2024.asuscomm.com:443/api/rule/list', {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
