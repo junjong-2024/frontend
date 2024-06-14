@@ -58,7 +58,7 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
     const handleLogout = () => {
         navigate('/LoginPage');
     };
-
+    /*
     const formatScript = (script: string) => {
         const lines = script.split('\n');
         if (lines.length > 3) {
@@ -66,6 +66,8 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
         }
         return script;
     };
+
+     */
     const handleDownloadScript = () => {
         const element = document.createElement("a");
         const file = new Blob([recordData.script], { type: 'text/plain' });
@@ -129,7 +131,7 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
                             <button className="scriptDownload" onClick={handleDownloadScript}>스크립트 다운로드</button>
                         </div>
                         <text className="script">스크립트 미리보기</text>
-                        <text className="scriptContent">{formatScript(recordData.script)}</text>
+                        <text className="scriptContent">{recordData.script}</text>
                     </div>
                 </div>
 
