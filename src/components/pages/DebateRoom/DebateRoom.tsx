@@ -51,6 +51,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [micImg, setMicImg] = useState(mic);
     const [showModal, setShowModal] = useState(false);
     const [ruleData, setRuleData] = useState<any[]>([]);
+    const ruleDataRef = useRef<any[]>(ruleData);
 
     const SoundClick = () => {
         if (soundClicked) {
@@ -396,6 +397,35 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     useEffect(() => {
         console.log("Updated ruleData:", ruleData);
     }, [ruleData]);
+    useEffect(() => {
+        const observerCallback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                    console.log("Mutation observed:", mutation);
+                    // 데이터가 추가될 때마다 마지막 데이터를 업데이트
+                    const latestData = ruleDataRef.current.length > 0 ? ruleDataRef.current[ruleDataRef.current.length - 1].msg : "대기 중";
+                    document.querySelector(".order")!.textContent = latestData;
+                }
+            }
+        };
+
+        const observerOptions = {
+            childList: true,
+            attributes: true,
+            subtree: true
+        };
+
+        const observer = new MutationObserver(observerCallback);
+        const targetNode = document.querySelector(".order");
+        if (targetNode) {
+            observer.observe(targetNode, observerOptions);
+        }
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
     return (
         <div>
             <div className="lineTop">
