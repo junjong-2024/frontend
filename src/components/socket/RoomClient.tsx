@@ -83,7 +83,6 @@ class RoomClient {
             this.eventListeners.set(evt, []);
         });
         this.join( name,room_id).then(async () => {
-                this.initSockets();
                 this._isOpen = true;
                 successCallback();
         });
