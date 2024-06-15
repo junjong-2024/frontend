@@ -82,7 +82,9 @@ class RoomClient {
         Object.keys(_EVENTS).forEach((evt) => {
             this.eventListeners.set(evt, []);
         });
-        this.join( name,room_id).then(async () => {
+        this.join( name,room_id
+        ).then(async () => {
+
             try {
                 this.initSockets();
                 successCallback();
