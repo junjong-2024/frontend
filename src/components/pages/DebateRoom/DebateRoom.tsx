@@ -21,7 +21,7 @@ interface DebateRoomProps {
 
 const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [progress, setProgress] = React.useState(0);
-    const [timeLeft, setTimeLeft] = useState('3:00');
+    const [timeLeft, setTimeLeft] = useState('0:00');
     const navigate = useNavigate();
     const location = useLocation();
     const { room_id,name, selectedAudioDevice, selectedVideoDevice } = location.state;
@@ -139,9 +139,14 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     }));
 
     useEffect(() => {
-        const totalTime = 3 * 60; // 3분을 초 단위로 변환
+        // Calculate totalTime based on ruleDataRef.current[ruleIndex]?.time if available
+        let totalTime = 0; // Default 3 minutes in seconds
+        if (ruleDataRef.current.length > 0 && ruleDataRef.current[ruleIndex]?.time) {
+            totalTime = ruleDataRef.current[ruleIndex].time;
+        }
+
         let remainingTime = totalTime;
-        const intervalTime = 1; // 1초마다 갱신
+        const intervalTime = 1; // 1 second interval
 
         const updateTimer = () => {
             remainingTime--;
@@ -149,24 +154,24 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             const seconds = remainingTime % 60;
             setTimeLeft(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
 
-            const newProgress = ((totalTime - remainingTime) / totalTime) * 100; // 진행률 계산
+            const newProgress = ((totalTime - remainingTime) / totalTime) * 100; // Calculate progress
             setProgress(newProgress);
 
             if (remainingTime <= 0) {
                 clearInterval(timer);
                 setProgress(0);
-                setTimeLeft('3:00');
-                remainingTime = totalTime; // 타이머를 다시 3분으로 설정
-                timer = setInterval(updateTimer, intervalTime * 1000);
+                setTimeLeft('0:00'); // Reset timeLeft to initial state when timer ends
+                remainingTime = totalTime; // Reset remainingTime to totalTime
+                timer = setInterval(updateTimer, intervalTime * 1000); // Restart timer
             }
         };
 
-        let timer = setInterval(updateTimer, intervalTime * 1000);
+        let timer = setInterval(updateTimer, intervalTime * 1000); // Start timer
 
         return () => {
-            clearInterval(timer);
+            clearInterval(timer); // Clean up on unmount or ruleDataRef.current change
         };
-    }, []);
+    }, [ruleIndex, ruleDataRef.current]);
 
     useEffect(() => {
         const initVideo = async () => {
@@ -422,7 +427,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 <div className="Title">
                     <text>토론 제목</text>
                 </div>
-                <div className="memberCount">3명/6명</div>
+                <div className="memberCount"></div>
             </div>
             <div className="line1">
                 <img className="line" src={require("../../image/Rectangle 32.svg").default} alt="선 "/>

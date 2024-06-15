@@ -68,6 +68,26 @@ const DebateRecord: React.FC<DebateRecordProps> = ({onBack,  onDebateCreate,onDe
     };
 
      */
+    useEffect(() => {
+        if (location.state) {
+            const data = location.state as any;
+            if (data.created_at) {
+
+                const createdAtDate = new Date(data.created_at);
+                createdAtDate.setHours(createdAtDate.getHours() + 9);
+                const year = createdAtDate.getFullYear();
+                const month = String(createdAtDate.getMonth() + 1).padStart(2, '0');
+                const day = String(createdAtDate.getDate()).padStart(2, '0');
+                const hours = String(createdAtDate.getHours()).padStart(2, '0');
+                const minutes = String(createdAtDate.getMinutes()).padStart(2, '0');
+                const seconds = String(createdAtDate.getSeconds()).padStart(2, '0');
+                data.created_at = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            }
+            setRecordData(data);
+        }
+    }, [location.state]);
+
+
     const handleDownloadScript = () => {
         const element = document.createElement("a");
         const file = new Blob([recordData.script], { type: 'text/plain' });
