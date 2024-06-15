@@ -11,6 +11,7 @@ const mediaType = {
     screen: 'screenType'
 };
 export const remoteVideoEls: HTMLVideoElement[] = [];
+export const ruleData: any[] = [];
 const _EVENTS = {
     exitRoom: 'exitRoom',
     openRoom: 'openRoom',
@@ -262,6 +263,7 @@ class RoomClient {
     initSockets() {
         this.socket.on('rule', (data: any) => {
             console.log(new Date().toISOString(), data);
+            ruleData.push(data);
         });
 
         this.socket.on('consumerClosed', ({ consumer_id }: { consumer_id: string }) => {

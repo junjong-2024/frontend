@@ -11,7 +11,7 @@ import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import DebateFin from "./DebateFin/DebateFin";
-import RoomClient, { remoteVideoEls } from "../../socket/RoomClient";
+import RoomClient, { remoteVideoEls,ruleData } from "../../socket/RoomClient";
 import {rc} from "../../socket/socket";
 
 interface DebateRoomProps {
@@ -50,8 +50,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const [videoImg, setVideoImg] = useState(video);
     const [micImg, setMicImg] = useState(mic);
     const [showModal, setShowModal] = useState(false);
-    const [ruleData, setRuleData] = useState<any[]>([]);
-    const ruleDataRef = useRef<any[]>(ruleData);
+    const [latestMsg, setLatestMsg] = useState('대기 중');
 
     const SoundClick = () => {
         if (soundClicked) {
@@ -87,11 +86,6 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         } else {
             console.log("진행되고 있긴하거임?")
             rc.start(); // rc의 start 메서드로 소켓 연결 시작
-            rc.socket.on('rule', (data: any) => {
-                console.log(new Date().toISOString(), data); // 데이터 콘솔 출력
-                // 데이터를 저장하기 위해 ruleData 상태 업데이트
-                setRuleData(prevData => [...prevData, data]);
-            });
             setDebateText("토론종료");
             setDebateClicked(true);
         }
@@ -396,7 +390,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     }, []);
 
 
-
+    useEffect(() => {
+        if (ruleData.length > 0) {
+            setLatestMsg(ruleData[ruleData.length - 1].msg);
+        }
+    }, [ruleData]);
 
 
 
@@ -413,7 +411,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 <img className="line" src={require("../../image/Rectangle 32.svg").default} alt="선 "/>
             </div>
             <div className="timer">
-                <div className="order">{ruleData.length > 0 ? ruleData[ruleData.length - 1].msg : "대기 중"}</div>
+                <div className="order">{latestMsg}</div>
                 <Box  className="timerBar" sx={{ width: '100%' }}>
                     <BorderLinearProgress variant="determinate" value={progress}></BorderLinearProgress>
                 </Box>
