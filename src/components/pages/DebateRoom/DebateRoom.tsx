@@ -393,7 +393,9 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             observer4.disconnect();
         };
     }, []);
-
+    useEffect(() => {
+        console.log("Updated ruleData:", ruleData);
+    }, [ruleData]);
     return (
         <div>
             <div className="lineTop">
