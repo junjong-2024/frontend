@@ -85,7 +85,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             setShowModal(true);
         } else {
             console.log("진행되고 있긴하거임?")
-            rc.start(name,room_id); // rc의 start 메서드로 소켓 연결 시작
+            rc.start(); // rc의 start 메서드로 소켓 연결 시작
             rc.socket.on('rule', (data: any) => {
                 console.log(new Date().toISOString(), data); // 데이터 콘솔 출력
                 // 데이터를 저장하기 위해 ruleData 상태 업데이트

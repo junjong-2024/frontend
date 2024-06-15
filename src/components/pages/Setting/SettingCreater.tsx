@@ -173,7 +173,7 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
         console.log(selectedVideoDeviceRef.current);
         if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
             console.log(remoteVideoEl+"remotevideo확인")
-            joinRoom(name, room_id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "/", successCallback);
+            joinRoom(name, room_id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "https://junjong2024.asuscomm.com/", successCallback);
 
         }
 

@@ -45,7 +45,7 @@ export function joinRoom(name: string, room_id: string, audioSelect: HTMLOptionE
         console.log('Already connected to a room');
     } else {
         initEnumerateDevices(audioSelect,videoSelect);
-        rc = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClientInstance, socketUrl, room_id, name,  successCallback);
+        rc = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClientInstance, socketUrl,room_id, name,  successCallback);
     }
 }
 

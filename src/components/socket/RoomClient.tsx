@@ -82,7 +82,7 @@ class RoomClient {
         Object.keys(_EVENTS).forEach((evt) => {
             this.eventListeners.set(evt, []);
         });
-        this.join(room_id, name).then(async () => {
+        this.join( name,room_id).then(async () => {
             try {
                 this.initSockets();
                 successCallback();
@@ -99,14 +99,21 @@ class RoomClient {
 
     ////////// INIT /////////
 
-    async start(name:string,room_id:string) {
-        await this.socket.request('start', { room_id, name }).catch((err: any) => {
+    async start() {
+        let room_id = this.room_id;
+        let name = this.name;
+        console.log('START'+room_id);
+        await this.socket.request('start', {
+            room_id,
+            name
+        }).catch((err:any) => {
             console.log('Start debate error:', err);
         });
     }
 
 
     async join(name: string, room_id: string) {
+        console.log(name+room_id+"@@@@@@@@@@@@@@@@@")
         try {
             const e: any = await this.socket.request('join', { name, room_id });
             if (e.hasOwnProperty('error')) {
