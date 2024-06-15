@@ -391,8 +391,10 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
 
     useEffect(() => {
+        console.log("msgmsgmgsmgsmgsmsg")
         if (ruleData.length > 0) {
             setLatestMsg(ruleData[ruleData.length - 1].msg);
+            console.log(latestMsg+"@@@@@@@@@@@@@@")
         }
     }, [ruleData]);
 
