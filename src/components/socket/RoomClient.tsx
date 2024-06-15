@@ -83,8 +83,13 @@ class RoomClient {
             this.eventListeners.set(evt, []);
         });
         this.join( name,room_id).then(async () => {
+            try {
+                this.initSockets();
                 this._isOpen = true;
                 successCallback();
+            } catch(ex) {
+                alert('The room is full!');
+            }
         });
 
     }
@@ -106,7 +111,16 @@ class RoomClient {
             console.log('Start debate error:', err);
         });
     }
-
+    async createRoom(room_id:string, name:string) {
+        await this.socket
+            .request('createRoom', {
+                room_id,
+                name
+            })
+            .catch((err:any) => {
+                console.log('Create room error:', err);
+            });
+    }
 
     async join(name: string, room_id: string) {
         console.log(name+room_id+"@@@@@@@@@@@@@@@@@")
@@ -119,6 +133,7 @@ class RoomClient {
 
 
             const data = await this.socket.request('getRouterRtpCapabilities');
+            console.log(data+"(((((((((((((((((((((((");
             const device = await this.loadDevice(data);
             this.device = device;
             await this.initTransports(device);
@@ -148,6 +163,7 @@ class RoomClient {
             }
         }
         await device.load({ routerRtpCapabilities });
+        console.log("check end")
         return device;
     }
 
@@ -317,6 +333,14 @@ class RoomClient {
             default:
                 return;
         }
+        if (!this.device) {
+            console.error('Device not initialized');
+
+        }
+
+
+
+        console.log('Audio flag:', audio);
 
         if (!this.device!.canProduce('video') && !audio) {
             console.error('Cannot produce video');

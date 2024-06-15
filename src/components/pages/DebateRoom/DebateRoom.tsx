@@ -179,12 +179,12 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 if (videoRef.current) {
 
-                    console.log(selectedVideoDevice + " video");
+
                     console.log(selectedAudioDevice + " audio");
-
-                    await rc.produce(RoomClient.mediaType.video, selectedVideoDevice);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                     await rc.produce(RoomClient.mediaType.audio, selectedAudioDevice);
-
+                    console.log(selectedVideoDevice + " video");
+                    await rc.produce(RoomClient.mediaType.video, selectedVideoDevice);
 
                     videoRef.current.srcObject = stream;
                 }
@@ -394,37 +394,11 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
             observer4.disconnect();
         };
     }, []);
-    useEffect(() => {
-        console.log("Updated ruleData:", ruleData);
-    }, [ruleData]);
-    useEffect(() => {
-        const observerCallback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList' || mutation.type === 'attributes') {
-                    console.log("Mutation observed:", mutation);
-                    // 데이터가 추가될 때마다 마지막 데이터를 업데이트
-                    const latestData = ruleDataRef.current.length > 0 ? ruleDataRef.current[ruleDataRef.current.length - 1].msg : "대기 중";
-                    document.querySelector(".order")!.textContent = latestData;
-                }
-            }
-        };
 
-        const observerOptions = {
-            childList: true,
-            attributes: true,
-            subtree: true
-        };
 
-        const observer = new MutationObserver(observerCallback);
-        const targetNode = document.querySelector(".order");
-        if (targetNode) {
-            observer.observe(targetNode, observerOptions);
-        }
 
-        return () => {
-            observer.disconnect();
-        };
-    }, []);
+
+
 
     return (
         <div>

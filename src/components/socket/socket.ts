@@ -34,7 +34,7 @@ export function start() {
     rc.start();
 }
 
-export function joinRoom(name: string, room_id: string, audioSelect: HTMLOptionElement, videoSelect: HTMLOptionElement, localMediaEl: HTMLVideoElement,
+export function joinRoom(name: string, room_id: string, localMediaEl: HTMLVideoElement,
                          remoteVideoEl: HTMLVideoElement,
                          remoteAudioEl: HTMLAudioElement,
                          mediasoupClientInstance: any,
@@ -44,53 +44,7 @@ export function joinRoom(name: string, room_id: string, audioSelect: HTMLOptionE
     if (rc && rc.isOpen()) {
         console.log('Already connected to a room');
     } else {
-        initEnumerateDevices(audioSelect,videoSelect);
         rc = new RoomClient(localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClientInstance, socketUrl,room_id, name,  successCallback);
     }
 }
 
-export function initEnumerateDevices(audioSelect: HTMLOptionElement, videoSelect: HTMLOptionElement) {
-    // Many browsers, without the consent of getUserMedia, cannot enumerate the devices.
-    if (isEnumerateDevices) return;
-
-    const constraints = {
-        audio: true,
-        video: true
-    };
-
-    navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((stream: MediaStream) => {
-            enumerateDevices(audioSelect, videoSelect);
-            stream.getTracks().forEach(function (track: MediaStreamTrack) {
-                track.stop();
-            });
-            console.log("initinitinit")
-        })
-        .catch((err: any) => {
-            console.error('Access denied for audio/video: ', err);
-        });
-}
-
-export function enumerateDevices(audioSelect: HTMLOptionElement, videoSelect: HTMLOptionElement) {
-    // Load mediaDevice options
-    navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) =>
-        devices.forEach((device) => {
-            let el = null;
-            if ('audioinput' === device.kind) {
-                el = audioSelect;
-                console.log(audioSelect)
-            } else if ('videoinput' === device.kind) {
-                el = videoSelect;
-            }
-            if (!el) return;
-
-            let option = document.createElement('option');
-            option.value = device.deviceId || '';
-            option.innerText = device.label || '';
-
-            el.appendChild(option);
-            isEnumerateDevices = true;
-        })
-    );
-}

@@ -159,6 +159,14 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
     };
 
     const onClickCreate = async () => {
+
+        console.log(selectedAudioDeviceRef.current);
+        console.log(selectedVideoDeviceRef.current);
+        if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
+            console.log(remoteVideoEl+"remotevideo확인"+"\n"+selectedAudioDeviceRef.current+"\n"+selectedVideoDeviceRef.current)
+            joinRoom(name, room_id, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "https://junjong2024.asuscomm.com/", successCallback);
+
+        }
         navigate('/debateRoom', {
             state: {
                 room_id,
@@ -166,17 +174,8 @@ const SettingCreater: React.FC<SettingCreaterProps> = ({ onSubmit,
                 selectedMicDevice: selectedMicDeviceRef.current?.value,
                 selectedAudioDevice: selectedAudioDeviceRef.current?.value,
                 selectedVideoDevice: selectedVideoDeviceRef.current?.value,
-
             }
         });
-        console.log(selectedAudioDeviceRef.current);
-        console.log(selectedVideoDeviceRef.current);
-        if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
-            console.log(remoteVideoEl+"remotevideo확인")
-            joinRoom(name, room_id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "https://junjong2024.asuscomm.com/", successCallback);
-
-        }
-
         console.log(name);
     };
 

@@ -173,7 +173,7 @@ const SettingMember: React.FC<SettingMemberProps> = ({onSubmit,
         if (selectedAudioDeviceRef.current&&selectedVideoDeviceRef.current) {
             console.log(localMediaEl+"remotevideo확인")
 
-            joinRoom(name, room_id, selectedAudioDeviceRef.current, selectedVideoDeviceRef.current, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "https://junjong2024.asuscomm.com", successCallback);
+            joinRoom(name, room_id, localMediaEl, remoteVideoEl, remoteAudioEl, mediasoupClient, "https://junjong2024.asuscomm.com", successCallback);
 
         }
 
