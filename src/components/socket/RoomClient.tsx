@@ -82,12 +82,9 @@ class RoomClient {
         Object.keys(_EVENTS).forEach((evt) => {
             this.eventListeners.set(evt, []);
         });
-        this.createRoom(room_id, name).then(async () => {
+        this.join(room_id, name).then(async () => {
             try {
-                await this.join(name, room_id);
                 this.initSockets();
-                this._isOpen = true;
-                console.log("create room")
                 successCallback();
             } catch(ex) {
                 alert('The room is full!');
@@ -108,16 +105,6 @@ class RoomClient {
         });
     }
 
-    async createRoom(room_id: string, name: string): Promise<void> {
-        try {
-            await this.socket.request('createRoom', {
-                room_id,
-                name
-            });
-        } catch (err) {
-            console.log('Create room error:', err);
-        }
-    }
 
     async join(name: string, room_id: string) {
         try {
