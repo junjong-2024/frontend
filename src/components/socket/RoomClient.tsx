@@ -264,7 +264,6 @@ class RoomClient {
         this.socket.on('rule', (data: any) => {
             console.log(new Date().toISOString(), data);
             ruleData.push(data);
-            console.log(ruleData)
         });
 
         this.socket.on('consumerClosed', ({ consumer_id }: { consumer_id: string }) => {

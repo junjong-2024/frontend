@@ -31,6 +31,8 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const videoRef3 = useRef<HTMLVideoElement>(null);
     const videoRef4 = useRef<HTMLVideoElement>(null);
     const videoRef5 = useRef<HTMLVideoElement>(null);
+    const [ruleIndex, setRuleIndex] = useState(0);
+    const ruleDataRef = useRef<any[]>(ruleData);
 
     const leave = () => {
         const token = localStorage.getItem('token');
@@ -391,12 +393,25 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
 
 
     useEffect(() => {
-        console.log("msgmsgmgsmgsmgsmsg")
-        if (ruleData.length > 0) {
-            setLatestMsg(ruleData[ruleData.length - 1].msg);
-            console.log(latestMsg+"@@@@@@@@@@@@@@")
-        }
+        ruleDataRef.current = ruleData;
     }, [ruleData]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (ruleDataRef.current.length > 0) {
+                setRuleIndex(prevIndex => (prevIndex + 1) % ruleDataRef.current.length);
+            }
+        }, ruleDataRef.current[ruleIndex]?.time * 1000 || 3000); // time이 undefined일 경우 기본 3초
+
+        return () => clearInterval(interval);
+    }, [ruleIndex, ruleData]);
+
+    useEffect(() => {
+        const orderElement = document.querySelector('.order');
+        if (orderElement && ruleDataRef.current[ruleIndex]) {
+            orderElement.textContent = ruleDataRef.current[ruleIndex].msg;
+        }
+    }, [ruleIndex, ruleData]);
 
 
 
@@ -413,7 +428,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 <img className="line" src={require("../../image/Rectangle 32.svg").default} alt="선 "/>
             </div>
             <div className="timer">
-                <div className="order">{latestMsg}</div>
+                <div className="order"></div>
                 <Box  className="timerBar" sx={{ width: '100%' }}>
                     <BorderLinearProgress variant="determinate" value={progress}></BorderLinearProgress>
                 </Box>
