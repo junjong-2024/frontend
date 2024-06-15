@@ -86,11 +86,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         } else {
             console.log("진행되고 있긴하거임?")
             rc.start(); // rc의 start 메서드로 소켓 연결 시작
-            rc.socket.on('rule', (data: any) => {
-                console.log(new Date().toISOString(), data); // 데이터 콘솔 출력
-                // 데이터를 저장하기 위해 ruleData 상태 업데이트
-                setRuleData(prevData => [...prevData, data]);
-            });
+
             setDebateText("토론종료");
             setDebateClicked(true);
         }
@@ -407,7 +403,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
                 <img className="line" src={require("../../image/Rectangle 32.svg").default} alt="선 "/>
             </div>
             <div className="timer">
-                <div className="order">A팀 입론</div>
+                <div className="order">{ruleData.length > 0 ? ruleData[ruleData.length - 1].msg : "대기 중"}</div>
                 <Box  className="timerBar" sx={{ width: '100%' }}>
                     <BorderLinearProgress variant="determinate" value={progress}></BorderLinearProgress>
                 </Box>

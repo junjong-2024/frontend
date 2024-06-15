@@ -85,6 +85,8 @@ class RoomClient {
         this.join( name,room_id).then(async () => {
 
             try {
+                this.initSockets();
+                this._isOpen = true;
                 successCallback();
             } catch(ex) {
                 alert('The room is full!');
