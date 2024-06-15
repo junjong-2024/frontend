@@ -405,15 +405,14 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     useEffect(() => {
         const interval = setInterval(() => {
             if (ruleDataRef.current.length > 0) {
-                // Check if debater is "end"
-                if (ruleDataRef.current[ruleIndex]?.debater === "end") {
-                    setRuleIndex(0); // Reset rule index to start from the beginning
-                    return; // Stop further execution for "end" debater
+                // Find the next valid rule index
+                let nextIndex = (ruleIndex + 1) % ruleDataRef.current.length;
+                while (ruleDataRef.current[nextIndex]?.debater === 'end') {
+                    nextIndex = (nextIndex + 1) % ruleDataRef.current.length;
                 }
-
-                setRuleIndex(prevIndex => (prevIndex + 1) % ruleDataRef.current.length);
+                setRuleIndex(nextIndex);
             }
-        }, ruleDataRef.current[ruleIndex]?.time * 1000 || 3000); // time이 undefined일 경우 기본 3초
+        }, ruleDataRef.current[ruleIndex]?.time * 1000 || 3000); // Default 3 seconds if time is undefined
 
         return () => clearInterval(interval);
     }, [ruleIndex, ruleData]);
@@ -421,12 +420,9 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     useEffect(() => {
         const orderElement = document.querySelector('.order');
         if (orderElement && ruleDataRef.current[ruleIndex]) {
-            // Set msg to "끝" if debater is "end"
-            const masg = ruleDataRef.current[ruleIndex]?.debater === "end" ? "끝" : ruleDataRef.current[ruleIndex].msg;
-            orderElement.textContent = masg;
+            orderElement.textContent = ruleDataRef.current[ruleIndex].msg;
         }
     }, [ruleIndex, ruleData]);
-
 
 
 
