@@ -33,6 +33,7 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     const videoRef5 = useRef<HTMLVideoElement>(null);
     const [ruleIndex, setRuleIndex] = useState(0);
     const ruleDataRef = useRef<any[]>(ruleData);
+    const intervalRef = useRef<any>(null);
 
     const leave = () => {
         const token = localStorage.getItem('token');
@@ -402,21 +403,29 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     }, [ruleData]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (ruleDataRef.current.length > 0) {
-                setRuleIndex(prevIndex => (prevIndex + 1) % ruleDataRef.current.length);
+        const orderElement = document.querySelector('.order');
+        if (orderElement && ruleDataRef.current[ruleIndex]) {
+            const currentRule = ruleDataRef.current[ruleIndex];
+            if (currentRule.debater === "end") {
+                orderElement.textContent = ""; // 메시지 없애기
+                clearInterval(intervalRef.current); // 반복 중지
+                return;
             }
-        }, ruleDataRef.current[ruleIndex]?.time * 1000 || 3000); // time이 undefined일 경우 기본 3초
-
-        return () => clearInterval(interval);
+            orderElement.textContent = currentRule.msg; // 그 외의 경우 메시지 표시
+        }
     }, [ruleIndex, ruleData]);
 
     useEffect(() => {
-        const orderElement = document.querySelector('.order');
-        if (orderElement && ruleDataRef.current[ruleIndex]) {
-            orderElement.textContent = ruleDataRef.current[ruleIndex].msg;
+        // ruleData가 업데이트될 때마다 interval 초기화
+        clearInterval(intervalRef.current);
+        if (ruleDataRef.current.length > 0) {
+            // 초기 interval 설정
+            intervalRef.current = setInterval(() => {
+                setRuleIndex(prevIndex => (prevIndex + 1) % ruleDataRef.current.length);
+            }, ruleDataRef.current[ruleIndex]?.time * 1000 || 3000); // time이 undefined일 경우 기본 3초
         }
-    }, [ruleIndex, ruleData]);
+    }, [ruleData]);
+
 
 
 
