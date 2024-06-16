@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import LoginForm from "./components/pages/MainPage/MainPage";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
 import SignUpForm from "./components/pages/SignUp/SignUp";
@@ -12,8 +12,6 @@ import Payment from "./components/pages/Dashboard/Payment";
 import Volume from "./components/pages/Dashboard/Volume";
 import SettingCreater from "./components/pages/Setting/SettingCreater";
 import SettingMember from "./components/pages/Setting/SettingMember";
-import Tests from "./components/pages/test/test";
-import DebateMemberRoom from "./components/pages/DebateRoom/DebateMemberRoom";
 
 import {Device} from 'mediasoup-client'
 import io from "socket.io-client";
@@ -64,6 +62,7 @@ const App: React.FC = () => {
 
         <Router>
             <Routes>
+                <Route path="/" element={<Navigate to="/LoginPage" />} />
                 <Route path="/signUp" element={<SignUpForm onSubmit={signup}/>}/>
                 <Route path="/LoginPage"
                        element={<LoginForm onLogin={handleLogin} onJoin={handleJoin} onRegister={register}/>}/>
@@ -81,7 +80,7 @@ const App: React.FC = () => {
                                                          onOpenDebateRecord={debateCreate} onDebateName={join} onDebateContent={join}/>}/>
 
                 <Route path="/debateRoom" element={<DebateRoom onLeave={back}/>}/>
-                <Route path="/debateMemberRoom" element={<DebateMemberRoom onLeave={back}/>}/>
+
 
                 <Route path="/debateCreate"
                        element={<Modal onButtonClick={debateCreate} onClose={back} onDebateName={join} onDebateContent={join}/>}/>
@@ -101,7 +100,7 @@ const App: React.FC = () => {
                                                                      mediasoupClient={mediasoupClientInstance}
                                                                      socket={socket}
                                                                      successCallback={join}/>}/>
-                <Route path="/test" element={<Tests />}/>
+
 
             </Routes>
         </Router>
