@@ -401,12 +401,6 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     useEffect(() => {
         const interval = setInterval(() => {
             if (ruleDataRef.current.length > 0) {
-                // Check if debater is "end"
-                if (ruleDataRef.current[ruleIndex]?.debater === "end") {
-                    setRuleIndex(0); // Reset rule index to start from the beginning
-                    return; // Stop further execution for "end" debater
-                }
-
                 setRuleIndex(prevIndex => (prevIndex + 1) % ruleDataRef.current.length);
             }
         }, ruleDataRef.current[ruleIndex]?.time * 1000 || 3000); // time이 undefined일 경우 기본 3초
@@ -417,12 +411,9 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
     useEffect(() => {
         const orderElement = document.querySelector('.order');
         if (orderElement && ruleDataRef.current[ruleIndex]) {
-            // Set msg to "끝" if debater is "end"
-            const msag = ruleDataRef.current[ruleIndex]?.debater === "end" ? "끝" : ruleDataRef.current[ruleIndex].msg;
-            orderElement.textContent = msag;
+            orderElement.textContent = ruleDataRef.current[ruleIndex].msg;
         }
     }, [ruleIndex, ruleData]);
-
 
 
 
