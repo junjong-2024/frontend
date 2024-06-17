@@ -11,7 +11,7 @@ import videMute from "../../image/videomute.svg"
 import mic from "../../image/mic.svg"
 import micMute from "../../image/micmute.svg"
 import DebateFin from "./DebateFin/DebateFin";
-import RoomClient, { remoteVideoEls,ruleData } from "../../socket/RoomClient";
+import RoomClient, { eventEmitter,remoteVideoEls,ruleData } from "../../socket/RoomClient";
 import {rc} from "../../socket/socket";
 
 interface DebateRoomProps {
@@ -421,6 +421,17 @@ const DebateRoom: React.FC<DebateRoomProps> = ({onLeave}) => {
         }
     }, [ruleIndex, ruleData]);
 
+    useEffect(() => {
+        const handleJoinFailed = () => {
+            navigate('/loginpage');
+        };
+
+        eventEmitter.on('joinFailed', handleJoinFailed);
+
+        return () => {
+            eventEmitter.off('joinFailed', handleJoinFailed);
+        };
+    }, [navigate]);
 
 
     return (

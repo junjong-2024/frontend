@@ -4,6 +4,7 @@ import { types } from 'mediasoup-client';
 import io from 'socket.io-client';
 import { setupSocket, CustomSocket } from './socket';
 import {Consumer,ConsumerOptions} from "mediasoup-client/lib/Consumer";
+import { EventEmitter } from 'events';
 
 const mediaType = {
     audio: 'audioType',
@@ -12,6 +13,8 @@ const mediaType = {
 };
 export const remoteVideoEls: HTMLVideoElement[] = [];
 export const ruleData: any[] = [];
+export const eventEmitter = new EventEmitter();
+
 const _EVENTS = {
     exitRoom: 'exitRoom',
     openRoom: 'openRoom',
@@ -134,7 +137,6 @@ class RoomClient {
 
 
             const data = await this.socket.request('getRouterRtpCapabilities');
-            console.log(data+"(((((((((((((((((((((((");
             const device = await this.loadDevice(data);
             this.device = device;
             await this.initTransports(device);
@@ -142,6 +144,7 @@ class RoomClient {
         } catch (error) {
             console.error('Failed to load device:', error);
             alert('Failed to join the room');
+            eventEmitter.emit('joinFailed');
         }
     }
 
