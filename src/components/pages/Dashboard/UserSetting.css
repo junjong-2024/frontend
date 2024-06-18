@@ -2,3 +2,15 @@
     margin-left: 424px;
     margin-top: 110px;
 }
+.userName{
+    font-size: 20px;
+    display: block;
+    margin-top: 60px;
+    margin-left: 120px;
+}
+.userEmail{
+    font-size: 20px;
+    display: block;
+    margin-top: 60px;
+    margin-left: 120px;
+}

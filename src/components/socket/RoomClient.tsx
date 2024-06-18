@@ -143,7 +143,7 @@ class RoomClient {
             this.socket.emit('getProducers');
         } catch (error) {
             console.error('Failed to load device:', error);
-            alert('Failed to join the room');
+            alert('토론방 참가에 실패하였습니다');
             eventEmitter.emit('joinFailed');
         }
     }

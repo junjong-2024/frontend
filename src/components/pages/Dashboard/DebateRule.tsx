@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import Modal from '../DebateCreate/DebateCreate';
 import "./DebateRule.css";
+import axios from "axios";
 
 interface DebateRuleProps {
     onLogout: () => void;
@@ -44,9 +45,46 @@ const DebateRule: React.FC<DebateRuleProps> = ({ onDebateCreate, onDebateName,on
         navigate('/Volume');
     };
     const handleLogout = () => {
+        localStorage.removeItem('token');
         navigate('/LoginPage');
     };
 
+    const handleCreateDefaultRule = () => {
+        const token = localStorage.getItem('token');
+
+        const defaultRuleData = {
+            rule_name: '기본 규칙',
+            spec: {
+                teamSize: 2,
+                orderSize: 1,
+                rules: [
+                    { debater: 'team_0_0', msg: '팀 A 입안', time: 10 },
+                    { debater: 'team_1_0', msg: '팀 B 입안', time: 10 },
+                    { debater: 'team_0_0', msg: '팀 A 교차질의', time: 10 },
+                    { debater: 'team_1_0', msg: '팀 B 교차질의', time: 10 },
+                    { debater: 'team_0_0', msg: '팀 A 반박', time: 10 },
+                    { debater: 'team_1_0', msg: '팀 B 반박', time: 10 },
+                    { debater: 'team_0_0', msg: '팀 A 마무리', time: 10 },
+                    { debater: 'team_1_0', msg: '팀 B 마무리', time: 10 },
+                ],
+            },
+        };
+
+        axios.post('https://junjong2024.asuscomm.com/api/rule', defaultRuleData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => {
+                console.log('Rule creation successful:', response.data);
+                alert("기본 규칙 생성에 성공하였습니다.")
+            })
+            .catch((error) => {
+                console.error('Error creating rule:', error);
+                // Handle error scenarios appropriately
+            });
+    };
 
     return (
         <>
@@ -87,6 +125,7 @@ const DebateRule: React.FC<DebateRuleProps> = ({ onDebateCreate, onDebateName,on
                     </div>
                     <div className="rulePage">
                         <text className="rule">토론 규칙</text>
+                        <button className="default" onClick={handleCreateDefaultRule}>기본 규칙 생성</button>
                     </div>
                 </div>
 

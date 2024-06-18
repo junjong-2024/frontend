@@ -15,6 +15,7 @@ const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
+
     const handleDebateCreate = () => {
         setShowModal(true);
     };
@@ -44,6 +45,7 @@ const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName
         navigate('/Volume');
     };
     const handleLogout = () => {
+        localStorage.removeItem('token');
         navigate('/LoginPage');
     };
 
@@ -87,6 +89,7 @@ const Payment: React.FC<PaymentProps> = ({onLogout, onDebateCreate, onDebateName
                     </div>
                     <div className="paymentPage">
                         <text className="dash">결제 정보</text>
+                        <text className="sorry">아직 구현되지 않은 페이지입니다.</text>
                     </div>
                 </div>
 

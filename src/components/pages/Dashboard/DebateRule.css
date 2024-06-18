@@ -9,3 +9,15 @@
     font-size: 40px;
     font-weight: bold;
 }
+.default{
+    display: block;
+    margin-top: 60px;
+    margin-left: 105px;
+    border-radius: 47px;
+    border: #2196F3;
+    background-color: #2196F3;
+    color: white;
+    width: 200px;
+    height: 50px;
+    font-size: 20px;
+}

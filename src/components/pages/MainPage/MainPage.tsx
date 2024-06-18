@@ -33,6 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onJoin, onRegister }) =>
             const data = await response.json();
             const token = data.token;
             localStorage.setItem('token', token);
+            localStorage.setItem('login_id', login_id);
             console.log(token)
 
             onLogin(login_id, password);

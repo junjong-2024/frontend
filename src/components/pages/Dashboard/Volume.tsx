@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Modal from '../DebateCreate/DebateCreate';
 import "./Volume.css";
 
@@ -14,6 +14,7 @@ interface VolumeProps {
 const Volume: React.FC<VolumeProps> = ({onLogout, onDebateCreate, onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+
 
     const handleDebateCreate = () => {
         setShowModal(true);
@@ -44,6 +45,7 @@ const Volume: React.FC<VolumeProps> = ({onLogout, onDebateCreate, onDebateName,o
         navigate('/Volume');
     };
     const handleLogout = () => {
+        localStorage.removeItem('token');
         navigate('/LoginPage');
     };
 
@@ -87,6 +89,7 @@ const Volume: React.FC<VolumeProps> = ({onLogout, onDebateCreate, onDebateName,o
                     </div>
                     <div className="volumePage">
                         <text className="dash">용량 정보</text>
+                        <text className="sorry">아직 구현되지 않은 페이지입니다.</text>
                     </div>
                 </div>
 

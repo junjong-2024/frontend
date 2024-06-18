@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import Modal from '../DebateCreate/DebateCreate';
 import "./UserSetting.css";
@@ -14,6 +14,7 @@ interface UserSettingProps {
 const UserSetting: React.FC<UserSettingProps> = ({onLogout, onDebateCreate, onDebateName,onDebateContent}) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+    const [userData, setUserData] = useState({ name: '', user_email: '' });
 
     const handleDebateCreate = () => {
         setShowModal(true);
@@ -44,10 +45,33 @@ const UserSetting: React.FC<UserSettingProps> = ({onLogout, onDebateCreate, onDe
         navigate('/Volume');
     };
     const handleLogout = () => {
+        localStorage.removeItem('token');
         navigate('/LoginPage');
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://junjong2024.asuscomm.com:443/api/user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                const loginId = localStorage.getItem('login_id');
+                const matchedUser = data.find((user: { login_id: string }) => user.login_id === loginId);
 
+                if (matchedUser) {
+                    setUserData({ name: matchedUser.name, user_email: matchedUser.user_email });
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
     return (
         <>
             <div className="header">
@@ -87,6 +111,8 @@ const UserSetting: React.FC<UserSettingProps> = ({onLogout, onDebateCreate, onDe
                     </div>
                     <div className="settingPage">
                         <text className="dash">사용자 설정</text>
+                        <text className="userName">이름 : {userData.name}</text>
+                        <text className="userEmail">email : {userData.user_email}</text>
                     </div>
                 </div>
 
